@@ -1,0 +1,5 @@
+dist
+coverage
+node_modules
+hunter-moji-ocr-project-pack
+public/vendor

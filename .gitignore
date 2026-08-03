@@ -1,0 +1,9 @@
+node_modules/
+.pnpm-store/
+dist/
+coverage/
+*.local
+.DS_Store
+
+# ChatGPT内での参照専用資料。画像を含むため公開リポジトリへ追加しない。
+hunter-moji-ocr-project-pack/

@@ -3,6 +3,11 @@ export type SmallKanaCompositionResult =
   | { ok: false; baseKana: string; reason: "unsupported-base" };
 
 const SMALL_KANA_COMPOSITIONS: Readonly<Record<string, string>> = {
+  あ: "ぁ",
+  い: "ぃ",
+  う: "ぅ",
+  え: "ぇ",
+  お: "ぉ",
   つ: "っ",
   や: "ゃ",
   ゆ: "ゅ",

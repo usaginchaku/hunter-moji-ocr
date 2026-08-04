@@ -5,9 +5,14 @@ import { findForegroundBounds } from "../src/recognition/normalize";
 import { createSmallBinaryGlyph } from "../src/recognition/small-glyph";
 
 describe("composeSmallKana", () => {
-  it("つ・や・ゆ・よを小書きかなへ変換する", () => {
-    expect(SMALL_KANA_BASES).toEqual(["つ", "や", "ゆ", "よ"]);
+  it("母音・つ・や・ゆ・よを小書きかなへ変換する", () => {
+    expect(SMALL_KANA_BASES).toEqual(["あ", "い", "う", "え", "お", "つ", "や", "ゆ", "よ"]);
     expect(SMALL_KANA_BASES.map((kana) => composeSmallKana(kana))).toEqual([
+      { ok: true, baseKana: "あ", kana: "ぁ" },
+      { ok: true, baseKana: "い", kana: "ぃ" },
+      { ok: true, baseKana: "う", kana: "ぅ" },
+      { ok: true, baseKana: "え", kana: "ぇ" },
+      { ok: true, baseKana: "お", kana: "ぉ" },
       { ok: true, baseKana: "つ", kana: "っ" },
       { ok: true, baseKana: "や", kana: "ゃ" },
       { ok: true, baseKana: "ゆ", kana: "ゅ" },
@@ -16,9 +21,9 @@ describe("composeSmallKana", () => {
   });
 
   it("対応外の基底文字を推測しない", () => {
-    expect(composeSmallKana("あ")).toEqual({
+    expect(composeSmallKana("わ")).toEqual({
       ok: false,
-      baseKana: "あ",
+      baseKana: "わ",
       reason: "unsupported-base",
     });
   });

@@ -39,7 +39,7 @@ const DAKUTEN_KANA = new Set([
   "ぼ",
 ]);
 const HANDAKUTEN_KANA = new Set(["ぱ", "ぴ", "ぷ", "ぺ", "ぽ"]);
-const SMALL_KANA = new Set(["っ", "ゃ", "ゅ", "ょ"]);
+const SMALL_KANA = new Set(["ぁ", "ぃ", "ぅ", "ぇ", "ぉ", "っ", "ゃ", "ゅ", "ょ"]);
 
 function emptyCategoryEvaluation(): CategoryEvaluation {
   return { total: 0, top1Correct: 0, top3Correct: 0 };

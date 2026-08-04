@@ -7,13 +7,18 @@ import {
 
 describe("createGeneratorTextPlan", () => {
   it("基本字・濁点・半濁点・小書きを描画情報へ変換する", () => {
-    const plan = createGeneratorTextPlan("かがぱっゃゅょ", 12);
+    const plan = createGeneratorTextPlan("かがぱぁぃぅぇぉっゃゅょ", 16);
     const glyphs = plan.lines[0].filter((token) => token.kind === "glyph");
 
     expect(glyphs.map(({ glyph }) => glyph.kana)).toEqual([
       "か",
       "か",
       "は",
+      "あ",
+      "い",
+      "う",
+      "え",
+      "お",
       "つ",
       "や",
       "ゆ",
@@ -27,8 +32,26 @@ describe("createGeneratorTextPlan", () => {
       null,
       null,
       null,
+      null,
+      null,
+      null,
+      null,
+      null,
     ]);
-    expect(glyphs.map(({ small }) => small)).toEqual([false, false, false, true, true, true, true]);
+    expect(glyphs.map(({ small }) => small)).toEqual([
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+    ]);
   });
 
   it("明示改行と指定文字数による折り返しを保持する", () => {

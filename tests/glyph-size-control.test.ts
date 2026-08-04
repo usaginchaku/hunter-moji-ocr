@@ -20,6 +20,15 @@ describe("glyph size control", () => {
     });
   });
 
+  it("母音も手動で小書きへ変更できる", () => {
+    const choices = buildGlyphSizeChoices("い", "normal", "small");
+    expect(choices.find(({ value }) => value === "small")).toMatchObject({
+      selected: true,
+      disabled: false,
+    });
+    expect(coerceGlyphSizeSelection("い", "small")).toBe("small");
+  });
+
   it("非対応字形では小書きを無効化して自動へ戻す", () => {
     const choices = buildGlyphSizeChoices("か", "small", "small");
     expect(choices.find(({ value }) => value === "auto")?.selected).toBe(true);

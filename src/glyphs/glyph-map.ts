@@ -11,7 +11,7 @@ export const horizontalGlyphs = [
     status: "draft",
     supportsDakuten: false,
     supportsHandakuten: false,
-    supportsSmallForm: false,
+    supportsSmallForm: true,
   },
   {
     id: "i",
@@ -23,7 +23,7 @@ export const horizontalGlyphs = [
     status: "draft",
     supportsDakuten: false,
     supportsHandakuten: false,
-    supportsSmallForm: false,
+    supportsSmallForm: true,
   },
   {
     id: "u",
@@ -35,7 +35,7 @@ export const horizontalGlyphs = [
     status: "draft",
     supportsDakuten: false,
     supportsHandakuten: false,
-    supportsSmallForm: false,
+    supportsSmallForm: true,
   },
   {
     id: "e",
@@ -47,7 +47,7 @@ export const horizontalGlyphs = [
     status: "draft",
     supportsDakuten: false,
     supportsHandakuten: false,
-    supportsSmallForm: false,
+    supportsSmallForm: true,
   },
   {
     id: "o",
@@ -59,7 +59,7 @@ export const horizontalGlyphs = [
     status: "draft",
     supportsDakuten: false,
     supportsHandakuten: false,
-    supportsSmallForm: false,
+    supportsSmallForm: true,
   },
   {
     id: "ka",

@@ -36,6 +36,15 @@ describe("recognition result", () => {
     });
   });
 
+  it("母音の通常判定をユーザーが小書きへ変更できる", () => {
+    expect(resolveGlyphOutput("い", "small", "normal", null)).toMatchObject({
+      kana: "ぃ",
+      size: "small",
+      sizeApplied: true,
+      sizeSupported: true,
+    });
+  });
+
   it("小書き非対応の基底文字を推測で変換しない", () => {
     expect(resolveGlyphOutput("か", "small", "normal", null)).toMatchObject({
       kana: "か",

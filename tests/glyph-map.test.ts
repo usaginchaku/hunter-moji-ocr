@@ -76,10 +76,14 @@ describe("horizontalGlyphs", () => {
 
   it("かなから字形を検索できる", () => {
     expect(findGlyphByKana("え")?.id).toBe("e");
+    expect(
+      ["あ", "い", "う", "え", "お"].every((kana) => findGlyphByKana(kana)?.supportsSmallForm),
+    ).toBe(true);
     expect(findGlyphByKana("こ")?.id).toBe("ko");
     expect(findGlyphByKana("そ")?.id).toBe("so");
     expect(findGlyphByKana("つ")?.supportsSmallForm).toBe(true);
     expect(findGlyphByKana("ゆ")?.supportsSmallForm).toBe(true);
+    expect(findGlyphByKana("わ")?.supportsSmallForm).toBe(false);
     expect(findGlyphByKana("ほ")?.supportsHandakuten).toBe(true);
     expect(findGlyphByKana("ー")?.id).toBe("long-vowel");
     expect(findGlyphByKana("未登録")).toBeUndefined();

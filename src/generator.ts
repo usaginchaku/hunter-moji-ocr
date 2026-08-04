@@ -7,6 +7,7 @@ import {
   MAX_GENERATOR_SOURCE_CHARACTERS,
   type GeneratorToken,
 } from "./generator/text-plan";
+import { computeGeneratorGlyphLayout, findOpaqueHorizontalBounds } from "./generator/glyph-layout";
 
 interface RenderSettings {
   cellSize: number;
@@ -48,7 +49,7 @@ app.innerHTML = `
           <textarea id="source-text" maxlength="${MAX_GENERATOR_SOURCE_CHARACTERS}" rows="6">おはよう
 ありがとう</textarea>
         </label>
-        <p class="maker-help">濁点・半濁点・「っ・ゃ・ゅ・ょ」・長音・空白・改行に対応します。</p>
+        <p class="maker-help">濁点・半濁点・「ぁ・ぃ・ぅ・ぇ・ぉ・っ・ゃ・ゅ・ょ」・長音・空白・改行に対応します。</p>
 
         <div class="maker-options">
           <label>文字色 <input id="ink-color" type="color" value="#111111" /></label>
@@ -153,14 +154,13 @@ function updateControlLabels(settings: RenderSettings): void {
 function drawModifier(
   context: CanvasRenderingContext2D,
   modifier: KanaModifier,
-  x: number,
+  centerX: number,
   y: number,
   cell: number,
+  radius: number,
   color: string,
 ): void {
-  const centerX = x + cell * 0.82;
   const centerY = y + cell * 0.78;
-  const radius = cell * 0.055;
   context.save();
   context.beginPath();
   context.arc(centerX, centerY, radius, 0, Math.PI * 2);
@@ -213,16 +213,31 @@ async function drawGlyph(
   const maskContext = mask.getContext("2d");
   if (!maskContext) throw new Error("字形の描画領域を初期化できませんでした。");
   maskContext.drawImage(image, 0, 0, 64, 64);
+  const bodyBounds = token.modifier
+    ? (findOpaqueHorizontalBounds(maskContext.getImageData(0, 0, 64, 64).data, 64, 64) ?? {
+        left: 0,
+        right: 64,
+        sourceWidth: 64,
+      })
+    : { left: 0, right: 64, sourceWidth: 64 };
   maskContext.globalCompositeOperation = "source-in";
   maskContext.fillStyle = color;
   maskContext.fillRect(0, 0, 64, 64);
 
   const scale = token.small ? 0.7 : 1;
-  const drawSize = cell * scale;
-  const drawX = x + (cell - drawSize) / 2;
-  const drawY = y + cell - drawSize;
-  context.drawImage(mask, drawX, drawY, drawSize, drawSize);
-  if (token.modifier) drawModifier(context, token.modifier, x, y, cell, color);
+  const layout = computeGeneratorGlyphLayout(bodyBounds, x, cell, scale, token.modifier);
+  const drawY = y + cell - layout.drawSize;
+  context.drawImage(mask, layout.drawX, drawY, layout.drawSize, layout.drawSize);
+  if (token.modifier && layout.modifierCenterX !== null)
+    drawModifier(
+      context,
+      token.modifier,
+      layout.modifierCenterX,
+      y,
+      cell,
+      layout.modifierRadius,
+      color,
+    );
 }
 
 async function render(): Promise<void> {

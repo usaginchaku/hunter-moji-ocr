@@ -34,6 +34,18 @@ describe("evaluateDetailedRecognition", () => {
     });
   });
 
+  it("小書き母音を小書きカテゴリへ集計する", () => {
+    const result = evaluateDetailedRecognition("ぁぃぅぇぉ", "あいうえお", [
+      ["あ", "ぁ"],
+      ["い", "ぃ"],
+      ["う", "ぅ"],
+      ["え", "ぇ"],
+      ["お", "ぉ"],
+    ]);
+
+    expect(result.categories.small).toEqual({ total: 5, top1Correct: 0, top3Correct: 5 });
+  });
+
   it("認識文字と候補一覧の数が違う入力を拒否する", () => {
     expect(() => evaluateDetailedRecognition("あ", "あ", [])).toThrow(
       "認識文字数と候補一覧の数が一致しません。",

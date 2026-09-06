@@ -34,7 +34,7 @@ npm run dev
 ## ハンター文字画像メーカー
 
 OCR画面の「文字画像を作る」から、または開発サーバーの
-`/hunter-moji-ocr/generator.html` を直接開いて利用できます。
+`/generator.html` を直接開いて利用できます。
 
 - ひらがな、濁点・半濁点、小書き「ぁ・ぃ・ぅ・ぇ・ぉ・っ・ゃ・ゅ・ょ」、長音、空白、改行に対応
 - 文字色、背景色、透明背景、文字サイズ、文字間隔、余白、1行の文字数を調整可能
@@ -73,9 +73,12 @@ npm run preview
 2. このプロジェクトを `main` ブランチへpushします。
 3. リポジトリの **Settings → Pages → Source** で **GitHub Actions** を選択します。
 4. `Deploy to GitHub Pages` ワークフローの完了を確認します。
-5. `https://<ユーザー名>.github.io/hunter-moji-ocr/` を開きます。
+5. Pagesのカスタムドメインに `hunter-ocr.mochibird.click` を設定し、
+   `https://hunter-ocr.mochibird.click/` を開きます。
 
-Viteの公開パスは `/hunter-moji-ocr/` に設定済みです。
+Viteの公開パスは、カスタムドメイン直下で配信するため `/` に設定しています。
+DNSでは `hunter-ocr.mochibird.click` のCNAMEを `usaginchaku.github.io` に向け、
+GitHub Pages側にも同じカスタムドメインを設定します。
 
 GitHub Pagesへ公開したページは、URLを知っている人なら誰でも閲覧できます。HTMLの
 `noindex,nofollow,noarchive` は検索エンジン向けの依頼であり、アクセス制御や非公開化を

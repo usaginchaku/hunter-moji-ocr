@@ -1,3 +1,4 @@
+import { DEFAULT_RECOGNITION_REVIEW_THRESHOLDS } from "../domain/recognition-review";
 import type { RecognizedGlyphResult, GlyphSize } from "../domain/recognition-result";
 import type { LoadedGlyphTemplate } from "../glyphs/load-templates";
 import type { BinarizationMode, BinaryGlyphVariant } from "../image/load";
@@ -43,6 +44,28 @@ interface InternalRecognitionAttempt extends SelectedRecognitionAttempt {
   structurePenalty: number;
   dominantCandidateShare: number;
   sourceAspectRatio: number;
+}
+
+function hasConfidentCompleteLines(attempt: InternalRecognitionAttempt): boolean {
+  const lines = new Map<number, RuntimeRecognizedGlyph[]>();
+  for (const glyph of attempt.recognized) {
+    const line = lines.get(glyph.lineIndex) ?? [];
+    line.push(glyph);
+    lines.set(glyph.lineIndex, line);
+  }
+  if (lines.size < 2) return false;
+  const thresholds = DEFAULT_RECOGNITION_REVIEW_THRESHOLDS;
+  return [...lines.values()].every((line) => {
+    if (line.length < 2) return false;
+    const meanScore =
+      line.reduce((sum, glyph) => sum + (glyph.candidates[0]?.score ?? 0), 0) / line.length;
+    const accepted = line.filter((glyph) => {
+      const top = glyph.candidates[0]?.score ?? 0;
+      const margin = top - (glyph.candidates[1]?.score ?? 0);
+      return top >= thresholds.minimumBaseScore && margin >= thresholds.minimumBaseMargin;
+    }).length;
+    return meanScore >= 0.8 && accepted / line.length >= 0.75;
+  });
 }
 
 export function runRecognitionPipeline(
@@ -170,12 +193,38 @@ export function runRecognitionPipeline(
     }
   }
 
-  const selected =
+  let selected =
     mode === "auto"
       ? selectBestRecognitionVariant(attempts)
       : (attempts.find(
           (attempt) => attempt.baseMode === mode && !attempt.id.endsWith("-bottom-anchor"),
         ) ?? null);
+  // A background-noise fallback must not discard confident text lines in a simple image.
+  // Keep the original selector for uncertain/colorful scenes and all manual modes.
+  if (mode === "auto" && selected?.id.endsWith("-bottom-anchor")) {
+    const preprocessing = variants.find(
+      (variant) => variant.mode === selected?.baseMode,
+    )?.preprocessing;
+    const complete = attempts.find((attempt) => attempt.id === selected?.baseMode);
+    if (
+      preprocessing &&
+      preprocessing.polarity !== "undetermined" &&
+      preprocessing.separation >= 0.9 &&
+      complete &&
+      hasConfidentCompleteLines(complete) &&
+      selected.recognized.every((partial) =>
+        complete.recognized.some(
+          (full) =>
+            full.automaticBaseKana === partial.automaticBaseKana &&
+            full.bbox.x === partial.bbox.x &&
+            full.bbox.y === partial.bbox.y &&
+            full.bbox.width === partial.bbox.width &&
+            full.bbox.height === partial.bbox.height,
+        ),
+      )
+    )
+      selected = complete;
+  }
   return {
     attempts: attempts.map(
       ({ id, baseMode, label, initialCandidateCount, refinedCandidateCount }) => ({

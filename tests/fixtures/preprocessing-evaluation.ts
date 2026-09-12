@@ -43,6 +43,14 @@ async function evaluate(): Promise<unknown> {
     "あっさり",
     "あい\nうえ\nおか",
   ];
+  const requestedCase = new URLSearchParams(location.search).get("case");
+  const selectedCase = requestedCase === null ? null : Number(requestedCase);
+  if (
+    selectedCase !== null &&
+    (!Number.isInteger(selectedCase) || selectedCase < 0 || selectedCase >= texts.length)
+  )
+    throw new Error("評価ケース番号が不正です。");
+  const totalCases = (selectedCase === null ? texts.length : 1) * PREPROCESSING_PATTERNS.length;
   type EvaluationResult = ReturnType<typeof evaluateTranscription> & {
     selectedMode: string | null;
     lineCount: number;
@@ -67,6 +75,7 @@ async function evaluate(): Promise<unknown> {
   }[] = [];
   for (const pattern of PREPROCESSING_PATTERNS) {
     for (const [caseIndex, expected] of texts.entries()) {
+      if (selectedCase !== null && caseIndex !== selectedCase) continue;
       const plan = createGeneratorTextPlan(expected, 12);
       const canvas = document.createElement("canvas");
       const cell = 64;
@@ -136,13 +145,14 @@ async function evaluate(): Promise<unknown> {
       const before = originalBinarizationVariants(rgba, canvas.width, canvas.height);
       const after = await loadImageAsBinaryGlyphVariants(file);
       const recognize = (variants: typeof before) => {
-        // Identical bitmaps and fixed templates have identical deterministic OCR results.
+        // Identical bitmaps, preprocessing metadata and fixed templates have identical OCR results.
         // Compare bytes (not hashes) to reuse those runs across paired color inversions.
         const cached = recognitionCache.get(caseIndex) ?? [];
         const match = cached.find((entry) =>
           variants.every((variant, index) => {
             const previous = entry.variants[index];
             return (
+              JSON.stringify(previous.preprocessing) === JSON.stringify(variant.preprocessing) &&
               previous.mode === variant.mode &&
               previous.binary.width === variant.binary.width &&
               previous.binary.height === variant.binary.height &&
@@ -206,7 +216,7 @@ async function evaluate(): Promise<unknown> {
           ),
         ),
       });
-      output.textContent = `実行中: ${results.length}/${texts.length * PREPROCESSING_PATTERNS.length}`;
+      output.textContent = `実行中: ${results.length}/${totalCases}`;
     }
   }
   const summary = PREPROCESSING_PATTERNS.map(({ id }) => {

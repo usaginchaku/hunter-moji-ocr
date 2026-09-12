@@ -1,5 +1,6 @@
 import type { BinaryGlyph } from "../recognition/features";
 import { validateImageDimensions } from "../app/file-validation";
+import { prepareImageForBinarization, type ImagePreprocessing } from "./preprocess";
 
 export const MAX_PROCESSING_SIDE = 2048;
 
@@ -24,6 +25,7 @@ export interface BinaryGlyphVariant {
   mode: BinarizationMode;
   label: string;
   binary: BinaryGlyph;
+  preprocessing?: ImagePreprocessing;
 }
 
 export function calculateProcessingSize(
@@ -459,7 +461,12 @@ async function decodeImage(file: File): Promise<ImageBitmap | HTMLImageElement> 
 async function loadImageRgba(
   file: File,
   crop?: NormalizedCrop | null,
-): Promise<{ rgba: Uint8ClampedArray; width: number; height: number }> {
+): Promise<{
+  rgba: Uint8ClampedArray;
+  width: number;
+  height: number;
+  preprocessing: ImagePreprocessing;
+}> {
   const image = await decodeImage(file);
   const sourceWidth = image.width;
   const sourceHeight = image.height;
@@ -496,7 +503,9 @@ async function loadImageRgba(
       height,
     );
     const imageData = context.getImageData(0, 0, width, height);
-    return { rgba: imageData.data, width, height };
+    const prepared = prepareImageForBinarization(imageData.data, width, height);
+    console.debug("OCR前処理", prepared.preprocessing);
+    return { ...prepared, width, height };
   } finally {
     if (isImageBitmap(image)) image.close();
   }
@@ -516,8 +525,16 @@ export async function loadImageAsBinaryGlyphVariants(
 ): Promise<BinaryGlyphVariant[]> {
   const image = await loadImageRgba(file, crop);
   const variants: BinaryGlyphVariant[] = [];
+  const adjustments = [
+    image.preprocessing.inverted ? "明色文字を反転" : "",
+    image.preprocessing.contrastAdjusted ? "コントラスト補正" : "",
+  ].filter(Boolean);
   const append = async (variant: BinaryGlyphVariant): Promise<void> => {
-    variants.push(variant);
+    variants.push({
+      ...variant,
+      label: [...adjustments, variant.label].join("・"),
+      preprocessing: image.preprocessing,
+    });
     await new Promise<void>((resolve) => window.setTimeout(resolve, 0));
   };
   await append({

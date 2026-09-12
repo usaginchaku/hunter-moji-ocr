@@ -1,0 +1,3316 @@
+{
+  "date": "2026-09-12",
+  "version": "0.1.1",
+  "baselineCommit": "c1a31c8",
+  "browser": "Chrome 152.0.7977.84 Windows headless",
+  "dataset": "112 synthetic Canvas images from independently drawn repository SVGs; 14 texts x 8 patterns; 584 expected characters",
+  "pipeline": "auto; all 47 templates; no user corrections",
+  "summary": [
+    {
+      "pattern": "white-black",
+      "before": {
+        "images": 14,
+        "expected": 73,
+        "correct": 69,
+        "exact": 13,
+        "extracted": 69,
+        "needsReview": 0
+      },
+      "after": {
+        "images": 14,
+        "expected": 73,
+        "correct": 69,
+        "exact": 13,
+        "extracted": 69,
+        "needsReview": 0
+      },
+      "regressed": [],
+      "identicalBinaries": 14
+    },
+    {
+      "pattern": "black-white",
+      "before": {
+        "images": 14,
+        "expected": 73,
+        "correct": 3,
+        "exact": 0,
+        "extracted": 68,
+        "needsReview": 68
+      },
+      "after": {
+        "images": 14,
+        "expected": 73,
+        "correct": 69,
+        "exact": 13,
+        "extracted": 69,
+        "needsReview": 0
+      },
+      "regressed": [],
+      "identicalBinaries": 0
+    },
+    {
+      "pattern": "gray-black",
+      "before": {
+        "images": 14,
+        "expected": 73,
+        "correct": 69,
+        "exact": 13,
+        "extracted": 69,
+        "needsReview": 0
+      },
+      "after": {
+        "images": 14,
+        "expected": 73,
+        "correct": 69,
+        "exact": 13,
+        "extracted": 69,
+        "needsReview": 0
+      },
+      "regressed": [],
+      "identicalBinaries": 14
+    },
+    {
+      "pattern": "gray-white",
+      "before": {
+        "images": 14,
+        "expected": 73,
+        "correct": 2,
+        "exact": 0,
+        "extracted": 72,
+        "needsReview": 69
+      },
+      "after": {
+        "images": 14,
+        "expected": 73,
+        "correct": 69,
+        "exact": 13,
+        "extracted": 69,
+        "needsReview": 0
+      },
+      "regressed": [],
+      "identicalBinaries": 0
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "before": {
+        "images": 14,
+        "expected": 73,
+        "correct": 1,
+        "exact": 0,
+        "extracted": 112,
+        "needsReview": 48
+      },
+      "after": {
+        "images": 14,
+        "expected": 73,
+        "correct": 69,
+        "exact": 13,
+        "extracted": 69,
+        "needsReview": 0
+      },
+      "regressed": [],
+      "identicalBinaries": 0
+    },
+    {
+      "pattern": "low-contrast-light",
+      "before": {
+        "images": 14,
+        "expected": 73,
+        "correct": 2,
+        "exact": 0,
+        "extracted": 54,
+        "needsReview": 5
+      },
+      "after": {
+        "images": 14,
+        "expected": 73,
+        "correct": 69,
+        "exact": 13,
+        "extracted": 69,
+        "needsReview": 1
+      },
+      "regressed": [],
+      "identicalBinaries": 0
+    },
+    {
+      "pattern": "navy-yellow",
+      "before": {
+        "images": 14,
+        "expected": 73,
+        "correct": 3,
+        "exact": 0,
+        "extracted": 67,
+        "needsReview": 63
+      },
+      "after": {
+        "images": 14,
+        "expected": 73,
+        "correct": 69,
+        "exact": 13,
+        "extracted": 69,
+        "needsReview": 1
+      },
+      "regressed": [],
+      "identicalBinaries": 0
+    },
+    {
+      "pattern": "pale-orange",
+      "before": {
+        "images": 14,
+        "expected": 73,
+        "correct": 69,
+        "exact": 13,
+        "extracted": 69,
+        "needsReview": 0
+      },
+      "after": {
+        "images": 14,
+        "expected": 73,
+        "correct": 69,
+        "exact": 13,
+        "extracted": 69,
+        "needsReview": 0
+      },
+      "regressed": [],
+      "identicalBinaries": 14
+    }
+  ],
+  "cases": [
+    {
+      "pattern": "white-black",
+      "caseIndex": 0,
+      "expected": "あいうえお",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "あいうえお",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あいうえお",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 1,
+      "expected": "かきくけこ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "かきくけこ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "かきくけこ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 2,
+      "expected": "さしすせそ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "さしすせそ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "さしすせそ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 3,
+      "expected": "たちつてと",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "たちつてと",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "たちつてと",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 4,
+      "expected": "なにぬねの",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "なにぬねの",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "なにぬねの",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 5,
+      "expected": "はひふへほ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "はひふへほ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "はひふへほ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 6,
+      "expected": "まみむめも",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "まみむめも",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "まみむめも",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 7,
+      "expected": "やゆよらり",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "やゆよらり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "やゆよらり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 8,
+      "expected": "るれろわをんー",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "るれろわをんー",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 7,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "るれろわをんー",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 7,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 9,
+      "expected": "がぎぐげご",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "がぎぐげご",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "がぎぐげご",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 10,
+      "expected": "ぱぴぷぺぽ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "ぱぴぷぺぽ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "ぱぴぷぺぽ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 11,
+      "expected": "きゃきゅきょ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "きゃきゅきょ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "きゃきゅきょ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 12,
+      "expected": "あっさり",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "あっさり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 4,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あっさり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 4,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "white-black",
+      "caseIndex": 13,
+      "expected": "あい\nうえ\nおか",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 0,
+      "expected": "あいうえお",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "てほぬわほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "neutral-ink",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "あいうえお",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 1,
+      "expected": "かきくけこ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "まとほつほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "neutral-ink",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "かきくけこ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 2,
+      "expected": "さしすせそ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "ねてわおほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "さしすせそ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 3,
+      "expected": "たちつてと",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "えそほてほ",
+        "characterAccuracy": 0.19999999999999996,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 5,
+        "selectedMode": "local-contrast",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "たちつてと",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 4,
+      "expected": "なにぬねの",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "へてほさの",
+        "characterAccuracy": 0.19999999999999996,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 5,
+        "selectedMode": "local-contrast",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "なにぬねの",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 5,
+      "expected": "はひふへほ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "へほほてお",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "はひふへほ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 6,
+      "expected": "まみむめも",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "へわつほほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "まみむめも",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 7,
+      "expected": "やゆよらり",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "ほわてをわ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "neutral-ink",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "やゆよらり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 8,
+      "expected": "るれろわをんー",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "ほてけほえてほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 7,
+        "expectedCharacters": 7,
+        "selectedMode": "local-contrast",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 7
+      },
+      "after": {
+        "predicted": "るれろわをんー",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 7,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 9,
+      "expected": "がぎぐげご",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "わくほこほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "neutral-ink",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "がぎぐげご",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 10,
+      "expected": "ぱぴぷぺぽ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "べぼまべお",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "ぱぴぷぺぽ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 11,
+      "expected": "きゃきゅきょ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "けほけほけほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 6,
+        "expectedCharacters": 6,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 6
+      },
+      "after": {
+        "predicted": "きゃきゅきょ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 12,
+      "expected": "あっさり",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "てほねわ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 4,
+        "selectedMode": "local-contrast",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 4
+      },
+      "after": {
+        "predicted": "あっさり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 4,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "black-white",
+      "caseIndex": 13,
+      "expected": "あい\nうえ\nおか",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "い",
+        "characterAccuracy": 0.16666666666666663,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 6,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 1,
+        "needsReview": 1
+      },
+      "after": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 0,
+      "expected": "あいうえお",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "あいうえお",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あいうえお",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 1,
+      "expected": "かきくけこ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "かきくけこ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "かきくけこ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 2,
+      "expected": "さしすせそ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "さしすせそ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "さしすせそ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 3,
+      "expected": "たちつてと",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "たちつてと",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "たちつてと",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 4,
+      "expected": "なにぬねの",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "なにぬねの",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "なにぬねの",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 5,
+      "expected": "はひふへほ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "はひふへほ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "はひふへほ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 6,
+      "expected": "まみむめも",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "まみむめも",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "まみむめも",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 7,
+      "expected": "やゆよらり",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "やゆよらり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "やゆよらり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 8,
+      "expected": "るれろわをんー",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "るれろわをんー",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 7,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "るれろわをんー",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 7,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 9,
+      "expected": "がぎぐげご",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "がぎぐげご",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "がぎぐげご",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 10,
+      "expected": "ぱぴぷぺぽ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "ぱぴぷぺぽ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "ぱぴぷぺぽ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 11,
+      "expected": "きゃきゅきょ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "きゃきゅきょ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "きゃきゅきょ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 12,
+      "expected": "あっさり",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "あっさり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 4,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あっさり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 4,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "caseIndex": 13,
+      "expected": "あい\nうえ\nおか",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 0,
+      "expected": "あいうえお",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "とふきぃきせき",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 7,
+        "expectedCharacters": 5,
+        "selectedMode": "sauvola",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 6
+      },
+      "after": {
+        "predicted": "あいうえお",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 1,
+      "expected": "かきくけこ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "のけほつほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "neutral-ink",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "かきくけこ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 2,
+      "expected": "さしすせそ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "ねてておみ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "neutral-ink",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "さしすせそ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 3,
+      "expected": "たちつてと",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "えそほてお",
+        "characterAccuracy": 0.19999999999999996,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 5,
+        "selectedMode": "neutral-ink",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "たちつてと",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 4,
+      "expected": "なにぬねの",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "へてほさつ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "neutral-ink",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "なにぬねの",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 5,
+      "expected": "はひふへほ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "きせんそお",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "はひふへほ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 6,
+      "expected": "まみむめも",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "へわつるて",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "neutral-ink",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "まみむめも",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 7,
+      "expected": "やゆよらり",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "くがちぃると",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 6,
+        "expectedCharacters": 5,
+        "selectedMode": "sauvola-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "やゆよらり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 8,
+      "expected": "るれろわをんー",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "つてほほひてさ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 7,
+        "expectedCharacters": 7,
+        "selectedMode": "neutral-ink",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 7
+      },
+      "after": {
+        "predicted": "るれろわをんー",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 7,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 9,
+      "expected": "がぎぐげご",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "のぉせほせ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "sauvola",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "がぎぐげご",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 10,
+      "expected": "ぱぴぷぺぽ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "そへとえお",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "ぱぴぷぺぽ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 11,
+      "expected": "きゃきゅきょ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "おけおしおほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 6,
+        "expectedCharacters": 6,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 6
+      },
+      "after": {
+        "predicted": "きゃきゅきょ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 12,
+      "expected": "あっさり",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "てほねわ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 4,
+        "selectedMode": "neutral-ink",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 4
+      },
+      "after": {
+        "predicted": "あっさり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 4,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "caseIndex": 13,
+      "expected": "あい\nうえ\nおか",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いわ",
+        "characterAccuracy": 0.16666666666666663,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 6,
+        "selectedMode": "local-color-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 1
+      },
+      "after": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 0,
+      "expected": "あいうえお",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いい\nきき",
+        "characterAccuracy": 0.19999999999999996,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 2,
+        "extracted": 4,
+        "needsReview": 2
+      },
+      "after": {
+        "predicted": "あいうえお",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 1,
+      "expected": "かきくけこ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいき\nいいせきい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 8,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 2,
+        "extracted": 9,
+        "needsReview": 3
+      },
+      "after": {
+        "predicted": "かきくけこ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 2,
+      "expected": "さしすせそ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "きぃぃ\nそいいを",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 7,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 2,
+        "extracted": 7,
+        "needsReview": 3
+      },
+      "after": {
+        "predicted": "さしすせそ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 3,
+      "expected": "たちつてと",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いい\nいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 2,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "たちつてと",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 4,
+      "expected": "なにぬねの",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいいも\nいいいいいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 12,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 2,
+        "extracted": 12,
+        "needsReview": 1
+      },
+      "after": {
+        "predicted": "なにぬねの",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 5,
+      "expected": "はひふへほ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいいいいい\nいいいいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 13,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 2,
+        "extracted": 13,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "はひふへほ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 6,
+      "expected": "まみむめも",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "ねんい\nみき\nねい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 6,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 3,
+        "extracted": 7,
+        "needsReview": 6
+      },
+      "after": {
+        "predicted": "まみむめも",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 7,
+      "expected": "やゆよらり",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いそそそぃぃいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 8,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 8,
+        "needsReview": 6
+      },
+      "after": {
+        "predicted": "やゆよらり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 8,
+      "expected": "るれろわをんー",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "きいいき\nぃーいいぃぃい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 11,
+        "expectedCharacters": 7,
+        "selectedMode": "local-color",
+        "lineCount": 2,
+        "extracted": 11,
+        "needsReview": 6
+      },
+      "after": {
+        "predicted": "るれろわをんー",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 7,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 9,
+      "expected": "がぎぐげご",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいき\nいいいいいをきも",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 12,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 2,
+        "extracted": 12,
+        "needsReview": 4
+      },
+      "after": {
+        "predicted": "がぎぐげご",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 10,
+      "expected": "ぱぴぷぺぽ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいきいいいい\nせーーいさーー",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 14,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 2,
+        "extracted": 14,
+        "needsReview": 8
+      },
+      "after": {
+        "predicted": "ぱぴぷぺぽ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 11,
+      "expected": "きゃきゅきょ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "せ\nわちちち",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 6,
+        "expectedCharacters": 6,
+        "selectedMode": "local-color",
+        "lineCount": 2,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "きゃきゅきょ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 12,
+      "expected": "あっさり",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "きぃぃ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 4,
+        "selectedMode": "local-color-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 3,
+        "needsReview": 1
+      },
+      "after": {
+        "predicted": "あっさり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 4,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "caseIndex": 13,
+      "expected": "あい\nうえ\nおか",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "およよ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 6,
+        "expectedCharacters": 6,
+        "selectedMode": "local-color-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 3,
+        "needsReview": 3
+      },
+      "after": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 0,
+      "expected": "あいうえお",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいい",
+        "characterAccuracy": 0.19999999999999996,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 5,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あいうえお",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 1,
+      "expected": "かきくけこ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "かきくけこ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 2,
+      "expected": "さしすせそ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "さしすせそ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 3,
+      "expected": "たちつてと",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "たちつてと",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 4,
+      "expected": "なにぬねの",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "なにぬねの",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 5,
+      "expected": "はひふへほ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "はひふへほ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 6,
+      "expected": "まみむめも",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "きせよき",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "neutral-ink",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 4
+      },
+      "after": {
+        "predicted": "まみむめも",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 7,
+      "expected": "やゆよらり",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "やゆよらり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 8,
+      "expected": "るれろわをんー",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 7,
+        "expectedCharacters": 7,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "るれろわをんー",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 7,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 9,
+      "expected": "がぎぐげご",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "がぎぐげご",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 10,
+      "expected": "ぱぴぷぺぽ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "ぱぴぷぺぽ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 1
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 11,
+      "expected": "きゃきゅきょ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 6,
+        "expectedCharacters": 6,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "きゃきゅきょ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 12,
+      "expected": "あっさり",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 4,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 3,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あっさり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 4,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "caseIndex": 13,
+      "expected": "あい\nうえ\nおか",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "い",
+        "characterAccuracy": 0.16666666666666663,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 6,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 1,
+        "needsReview": 1
+      },
+      "after": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 0,
+      "expected": "あいうえお",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "てほぬほほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "あいうえお",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 1,
+      "expected": "かきくけこ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "ほとほぬほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-contrast",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "かきくけこ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 2,
+      "expected": "さしすせそ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "ほへわおほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "さしすせそ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 3,
+      "expected": "たちつてと",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "えそほほお",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "たちつてと",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 4,
+      "expected": "なにぬねの",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "へてほさの",
+        "characterAccuracy": 0.19999999999999996,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 5,
+        "selectedMode": "local-contrast",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "なにぬねの",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 5,
+      "expected": "はひふへほ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "へほけへお",
+        "characterAccuracy": 0.19999999999999996,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "はひふへほ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 6,
+      "expected": "まみむめも",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "へわつほほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "まみむめも",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 7,
+      "expected": "やゆよらり",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "わわてをわ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-contrast",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "やゆよらり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 8,
+      "expected": "るれろわをんー",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "ほてほほえほさ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 7,
+        "expectedCharacters": 7,
+        "selectedMode": "local-contrast",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 7
+      },
+      "after": {
+        "predicted": "るれろわをんー",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 7,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 9,
+      "expected": "がぎぐげご",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "いいいい",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "がぎぐげご",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 10,
+      "expected": "ぱぴぷぺぽ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "べぼぼべお",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 5,
+        "selectedMode": "local-color",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 5
+      },
+      "after": {
+        "predicted": "ぱぴぷぺぽ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 1
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 11,
+      "expected": "きゃきゅきょ",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "とほとわとほ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 6,
+        "expectedCharacters": 6,
+        "selectedMode": "local-contrast",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 6
+      },
+      "after": {
+        "predicted": "きゃきゅきょ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 12,
+      "expected": "あっさり",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "てほねわ",
+        "characterAccuracy": 0,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 4,
+        "selectedMode": "local-contrast",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 4
+      },
+      "after": {
+        "predicted": "あっさり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 4,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "caseIndex": 13,
+      "expected": "あい\nうえ\nおか",
+      "identicalBinaries": false,
+      "before": {
+        "predicted": "い",
+        "characterAccuracy": 0.16666666666666663,
+        "exactMatch": false,
+        "editDistance": 5,
+        "expectedCharacters": 6,
+        "selectedMode": "dark-ink",
+        "lineCount": 1,
+        "extracted": 1,
+        "needsReview": 1
+      },
+      "after": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 0,
+      "expected": "あいうえお",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "あいうえお",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あいうえお",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 1,
+      "expected": "かきくけこ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "かきくけこ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "かきくけこ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 2,
+      "expected": "さしすせそ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "さしすせそ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "さしすせそ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 3,
+      "expected": "たちつてと",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "たちつてと",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "たちつてと",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 4,
+      "expected": "なにぬねの",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "なにぬねの",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "なにぬねの",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 5,
+      "expected": "はひふへほ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "はひふへほ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "はひふへほ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 6,
+      "expected": "まみむめも",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "まみむめも",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "まみむめも",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 7,
+      "expected": "やゆよらり",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "やゆよらり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "やゆよらり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 8,
+      "expected": "るれろわをんー",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "るれろわをんー",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 7,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "るれろわをんー",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 7,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 7,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 9,
+      "expected": "がぎぐげご",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "がぎぐげご",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "がぎぐげご",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 10,
+      "expected": "ぱぴぷぺぽ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "ぱぴぷぺぽ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "ぱぴぷぺぽ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 5,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 5,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 11,
+      "expected": "きゃきゅきょ",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "きゃきゅきょ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "きゃきゅきょ",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 6,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 12,
+      "expected": "あっさり",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "あっさり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 4,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あっさり",
+        "characterAccuracy": 1,
+        "exactMatch": true,
+        "editDistance": 0,
+        "expectedCharacters": 4,
+        "selectedMode": "background",
+        "lineCount": 1,
+        "extracted": 4,
+        "needsReview": 0
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "caseIndex": 13,
+      "expected": "あい\nうえ\nおか",
+      "identicalBinaries": true,
+      "before": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      }
+    }
+  ]
+}

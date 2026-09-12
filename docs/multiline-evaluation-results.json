@@ -1,0 +1,899 @@
+{
+  "date": "2026-09-12",
+  "version": "0.1.2",
+  "codeCommit": "3a3a1907a47d9c248719bf14d4e17f4970320585",
+  "baselineCommit": "9d6018a",
+  "browser": "Chrome 152.0.7977.84 Windows headless",
+  "dataset": "8 self-made three-line images; case 13 from preprocessing-evaluation.html; 48 expected characters",
+  "comparison": "Saved v0.1.1 preprocessing-enabled output versus v0.1.2 preprocessing-enabled output; other 104 synthetic cases and 88 real crops were not rerun at v0.1.2",
+  "results": [
+    {
+      "pattern": "white-black",
+      "expected": "あい\nうえ\nおか",
+      "before": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あぃ\nうえ\nおか",
+        "expected": "あい\nうえ\nおか",
+        "characterAccuracy": 0.8333333333333334,
+        "exactLineRate": 0.6666666666666666,
+        "exactMatch": false,
+        "editDistance": 1,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 3,
+        "extracted": 6,
+        "needsReview": 0,
+        "milliseconds": 6392.099999997765,
+        "foreground": [
+          {
+            "mode": "background",
+            "fraction": 0.07057883522727272
+          },
+          {
+            "mode": "dark-ink",
+            "fraction": 0.06547407670454546
+          },
+          {
+            "mode": "local-contrast",
+            "fraction": 0.06640625
+          },
+          {
+            "mode": "local-color",
+            "fraction": 0.06935813210227272
+          },
+          {
+            "mode": "sauvola",
+            "fraction": 0.068115234375
+          },
+          {
+            "mode": "neutral-ink",
+            "fraction": 0.06540749289772728
+          }
+        ],
+        "attempts": [
+          {
+            "id": "background",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "background-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "dark-ink",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "dark-ink-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-contrast",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-contrast-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-color",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-color-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "sauvola",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "sauvola-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "neutral-ink",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "neutral-ink-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          }
+        ]
+      }
+    },
+    {
+      "pattern": "black-white",
+      "expected": "あい\nうえ\nおか",
+      "before": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あぃ\nうえ\nおか",
+        "expected": "あい\nうえ\nおか",
+        "characterAccuracy": 0.8333333333333334,
+        "exactLineRate": 0.6666666666666666,
+        "exactMatch": false,
+        "editDistance": 1,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 3,
+        "extracted": 6,
+        "needsReview": 0,
+        "milliseconds": 6379.900000002235,
+        "foreground": [
+          {
+            "mode": "background",
+            "fraction": 0.07057883522727272
+          },
+          {
+            "mode": "dark-ink",
+            "fraction": 0.06547407670454546
+          },
+          {
+            "mode": "local-contrast",
+            "fraction": 0.06640625
+          },
+          {
+            "mode": "local-color",
+            "fraction": 0.06935813210227272
+          },
+          {
+            "mode": "sauvola",
+            "fraction": 0.068115234375
+          },
+          {
+            "mode": "neutral-ink",
+            "fraction": 0.06540749289772728
+          }
+        ],
+        "attempts": [
+          {
+            "id": "background",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "background-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "dark-ink",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "dark-ink-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-contrast",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-contrast-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-color",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-color-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "sauvola",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "sauvola-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "neutral-ink",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "neutral-ink-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          }
+        ]
+      }
+    },
+    {
+      "pattern": "gray-black",
+      "expected": "あい\nうえ\nおか",
+      "before": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あぃ\nうえ\nおか",
+        "expected": "あい\nうえ\nおか",
+        "characterAccuracy": 0.8333333333333334,
+        "exactLineRate": 0.6666666666666666,
+        "exactMatch": false,
+        "editDistance": 1,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 3,
+        "extracted": 6,
+        "needsReview": 0,
+        "milliseconds": 6423.800000000745,
+        "foreground": [
+          {
+            "mode": "background",
+            "fraction": 0.06744939630681818
+          },
+          {
+            "mode": "dark-ink",
+            "fraction": 0.07102272727272728
+          },
+          {
+            "mode": "local-contrast",
+            "fraction": 0.06698330965909091
+          },
+          {
+            "mode": "local-color",
+            "fraction": 0.06778231534090909
+          },
+          {
+            "mode": "sauvola",
+            "fraction": 0.06693892045454546
+          },
+          {
+            "mode": "neutral-ink",
+            "fraction": 0.06824840198863637
+          }
+        ],
+        "attempts": [
+          {
+            "id": "background",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "background-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "dark-ink",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "dark-ink-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-contrast",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-contrast-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-color",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-color-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "sauvola",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "sauvola-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "neutral-ink",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "neutral-ink-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          }
+        ]
+      }
+    },
+    {
+      "pattern": "gray-white",
+      "expected": "あい\nうえ\nおか",
+      "before": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あぃ\nうえ\nおか",
+        "expected": "あい\nうえ\nおか",
+        "characterAccuracy": 0.8333333333333334,
+        "exactLineRate": 0.6666666666666666,
+        "exactMatch": false,
+        "editDistance": 1,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 3,
+        "extracted": 6,
+        "needsReview": 0,
+        "milliseconds": 6332,
+        "foreground": [
+          {
+            "mode": "background",
+            "fraction": 0.0673828125
+          },
+          {
+            "mode": "dark-ink",
+            "fraction": 1
+          },
+          {
+            "mode": "local-contrast",
+            "fraction": 0.06685014204545454
+          },
+          {
+            "mode": "local-color",
+            "fraction": 0.06773792613636363
+          },
+          {
+            "mode": "sauvola",
+            "fraction": 0.06733842329545454
+          },
+          {
+            "mode": "neutral-ink",
+            "fraction": 0.06818181818181818
+          }
+        ],
+        "attempts": [
+          {
+            "id": "background",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "background-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "dark-ink",
+            "initialCandidateCount": 1,
+            "refinedCandidateCount": 1
+          },
+          {
+            "id": "dark-ink-bottom-anchor",
+            "initialCandidateCount": 1,
+            "refinedCandidateCount": 1
+          },
+          {
+            "id": "local-contrast",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-contrast-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-color",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-color-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "sauvola",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "sauvola-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "neutral-ink",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "neutral-ink-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          }
+        ]
+      }
+    },
+    {
+      "pattern": "low-contrast-dark",
+      "expected": "あい\nうえ\nおか",
+      "before": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あぃ\nうえ\nおか",
+        "expected": "あい\nうえ\nおか",
+        "characterAccuracy": 0.8333333333333334,
+        "exactLineRate": 0.6666666666666666,
+        "exactMatch": false,
+        "editDistance": 1,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 3,
+        "extracted": 6,
+        "needsReview": 0,
+        "milliseconds": 6524.800000000745,
+        "foreground": [
+          {
+            "mode": "background",
+            "fraction": 0.07100053267045454
+          },
+          {
+            "mode": "dark-ink",
+            "fraction": 0.06582919034090909
+          },
+          {
+            "mode": "local-contrast",
+            "fraction": 0.06742720170454546
+          },
+          {
+            "mode": "local-color",
+            "fraction": 0.06960227272727272
+          },
+          {
+            "mode": "sauvola",
+            "fraction": 0.06822620738636363
+          },
+          {
+            "mode": "neutral-ink",
+            "fraction": 0.06582919034090909
+          }
+        ],
+        "attempts": [
+          {
+            "id": "background",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "background-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "dark-ink",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "dark-ink-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-contrast",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-contrast-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-color",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-color-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "sauvola",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "sauvola-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "neutral-ink",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "neutral-ink-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          }
+        ]
+      }
+    },
+    {
+      "pattern": "low-contrast-light",
+      "expected": "あい\nうえ\nおか",
+      "before": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あぃ\nうえ\nおか",
+        "expected": "あい\nうえ\nおか",
+        "characterAccuracy": 0.8333333333333334,
+        "exactLineRate": 0.6666666666666666,
+        "exactMatch": false,
+        "editDistance": 1,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 3,
+        "extracted": 6,
+        "needsReview": 0,
+        "milliseconds": 6506.800000000745,
+        "foreground": [
+          {
+            "mode": "background",
+            "fraction": 0.07057883522727272
+          },
+          {
+            "mode": "dark-ink",
+            "fraction": 0.06551846590909091
+          },
+          {
+            "mode": "local-contrast",
+            "fraction": 0.06685014204545454
+          },
+          {
+            "mode": "local-color",
+            "fraction": 0.069091796875
+          },
+          {
+            "mode": "sauvola",
+            "fraction": 0.06776012073863637
+          },
+          {
+            "mode": "neutral-ink",
+            "fraction": 0.06551846590909091
+          }
+        ],
+        "attempts": [
+          {
+            "id": "background",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "background-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "dark-ink",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "dark-ink-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-contrast",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-contrast-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-color",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-color-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "sauvola",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "sauvola-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "neutral-ink",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "neutral-ink-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          }
+        ]
+      }
+    },
+    {
+      "pattern": "navy-yellow",
+      "expected": "あい\nうえ\nおか",
+      "before": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あぃ\nうえ\nおか",
+        "expected": "あい\nうえ\nおか",
+        "characterAccuracy": 0.8333333333333334,
+        "exactLineRate": 0.6666666666666666,
+        "exactMatch": false,
+        "editDistance": 1,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 3,
+        "extracted": 6,
+        "needsReview": 0,
+        "milliseconds": 4263.300000000745,
+        "foreground": [
+          {
+            "mode": "background",
+            "fraction": 0.07009055397727272
+          },
+          {
+            "mode": "dark-ink",
+            "fraction": 0.061479048295454544
+          },
+          {
+            "mode": "local-contrast",
+            "fraction": 0.06314364346590909
+          },
+          {
+            "mode": "local-color",
+            "fraction": 0.06658380681818182
+          },
+          {
+            "mode": "sauvola",
+            "fraction": 0.0032182173295454545
+          },
+          {
+            "mode": "neutral-ink",
+            "fraction": 0
+          }
+        ],
+        "attempts": [
+          {
+            "id": "background",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "background-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "dark-ink",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "dark-ink-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-contrast",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-contrast-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          },
+          {
+            "id": "local-color",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "local-color-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          }
+        ]
+      }
+    },
+    {
+      "pattern": "pale-orange",
+      "expected": "あい\nうえ\nおか",
+      "before": {
+        "predicted": "おか",
+        "characterAccuracy": 0.33333333333333337,
+        "exactMatch": false,
+        "editDistance": 4,
+        "expectedCharacters": 6,
+        "selectedMode": "background-bottom-anchor",
+        "lineCount": 1,
+        "extracted": 2,
+        "needsReview": 0
+      },
+      "after": {
+        "predicted": "あぃ\nうえ\nおか",
+        "expected": "あい\nうえ\nおか",
+        "characterAccuracy": 0.8333333333333334,
+        "exactLineRate": 0.6666666666666666,
+        "exactMatch": false,
+        "editDistance": 1,
+        "expectedCharacters": 6,
+        "selectedMode": "background",
+        "lineCount": 3,
+        "extracted": 6,
+        "needsReview": 0,
+        "milliseconds": 1083.3999999985099,
+        "foreground": [
+          {
+            "mode": "background",
+            "fraction": 0.06807084517045454
+          },
+          {
+            "mode": "dark-ink",
+            "fraction": 0
+          },
+          {
+            "mode": "local-contrast",
+            "fraction": 0
+          },
+          {
+            "mode": "local-color",
+            "fraction": 0.00004438920454545455
+          },
+          {
+            "mode": "sauvola",
+            "fraction": 0
+          },
+          {
+            "mode": "neutral-ink",
+            "fraction": 0
+          }
+        ],
+        "attempts": [
+          {
+            "id": "background",
+            "initialCandidateCount": 6,
+            "refinedCandidateCount": 6
+          },
+          {
+            "id": "background-bottom-anchor",
+            "initialCandidateCount": 2,
+            "refinedCandidateCount": 2
+          }
+        ]
+      }
+    }
+  ],
+  "localJpeg": {
+    "id": "FR-2026-08-04-001",
+    "width": 576,
+    "height": 368,
+    "expectedCharacters": 13,
+    "before": {
+      "version": "0.1.1",
+      "correct": 4,
+      "extracted": 4,
+      "lines": 1,
+      "exact": false
+    },
+    "after": {
+      "version": "0.1.2",
+      "correct": 13,
+      "extracted": 13,
+      "lines": 3,
+      "exact": true,
+      "selectedMode": "background"
+    },
+    "note": "Auto mode, fixed full image, no manual correction; original image remains local-only"
+  }
+}

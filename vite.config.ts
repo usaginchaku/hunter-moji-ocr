@@ -6,7 +6,7 @@ const configDirectory = decodeURIComponent(new URL(".", import.meta.url).pathnam
 );
 
 export default defineConfig({
-  base: "/",
+  base: "/hunter-moji-ocr/",
   build: {
     rolldownOptions: {
       input: {

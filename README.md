@@ -73,12 +73,11 @@ npm run preview
 2. このプロジェクトを `main` ブランチへpushします。
 3. リポジトリの **Settings → Pages → Source** で **GitHub Actions** を選択します。
 4. `Deploy to GitHub Pages` ワークフローの完了を確認します。
-5. Pagesのカスタムドメインに `hunter-ocr.mochibird.click` を設定し、
-   `https://hunter-ocr.mochibird.click/` を開きます。
+5. [公開サイト](https://usaginchaku.github.io/hunter-moji-ocr/)を開きます。
 
-Viteの公開パスは、カスタムドメイン直下で配信するため `/` に設定しています。
-DNSでは `hunter-ocr.mochibird.click` のCNAMEを `usaginchaku.github.io` に向け、
-GitHub Pages側にも同じカスタムドメインを設定します。
+Viteの公開パスは、現在のGitHub Pagesの配信先に合わせて `/hunter-moji-ocr/` に設定しています。
+2026-09-13にPages設定を確認した時点ではカスタムドメインは未設定でした。
+将来独自ドメインへ移行する場合は、DNS・Pages設定とViteの公開パスをまとめて変更してください。
 
 GitHub Pagesへ公開したページは、URLを知っている人なら誰でも閲覧できます。HTMLの
 `noindex,nofollow,noarchive` は検索エンジン向けの依頼であり、アクセス制御や非公開化を

@@ -29,7 +29,7 @@ Otsuは極性と補正可否を調べるために使い、既存の6方式を一
 再実行:
 
 ```sh
-npm run dev -- --host 127.0.0.1
+npm run dev -- --host 127.0.0.1 --base /
 ```
 
 表示された開発サーバーの `/tests/fixtures/preprocessing-evaluation.html` を開く。最終結果はページ内にJSONで表示される。実行中にソースを編集するとViteの再読み込みで評価が最初からになるため、コードを固定して実行する。

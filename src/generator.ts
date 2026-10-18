@@ -30,27 +30,22 @@ app.innerHTML = `
   <main class="maker-shell">
     <header class="maker-hero">
       <div>
-        <p class="maker-eyebrow">HUNTER MOJI MAKER <span class="maker-beta">BETA</span></p>
         <h1>ハンター文字 <span>画像メーカー</span></h1>
-        <p>ひらがなを入力して、独自作図のハンター文字画像を作成します。</p>
       </div>
-      <a class="maker-nav" href="${import.meta.env.BASE_URL}">画像を読み取る OCRへ</a>
+      <nav class="site-nav" aria-label="ページ移動">
+        <a href="${import.meta.env.BASE_URL}">OCR</a>
+        <a href="${import.meta.env.BASE_URL}help.html" target="_blank" rel="noopener" aria-label="使い方（別タブで開く）">使い方</a>
+      </nav>
     </header>
-
-    <section class="maker-note" aria-label="このツールについて">
-      <strong>BETA・試験公開中</strong>
-      <span>すべてブラウザ内で処理し、入力内容や生成画像を外部サーバーへ送信しません。</span>
-    </section>
 
     <section class="maker-workspace">
       <div class="maker-controls">
         <label class="maker-text-label" for="source-text">
           <span>ひらがな</span>
-          <textarea id="source-text" maxlength="${MAX_GENERATOR_SOURCE_CHARACTERS}" rows="6">おはよう
+          <textarea id="source-text" maxlength="${MAX_GENERATOR_SOURCE_CHARACTERS}" rows="3">おはよう
 ありがとう</textarea>
         </label>
-        <p class="maker-help">濁点・半濁点・「ぁ・ぃ・ぅ・ぇ・ぉ・っ・ゃ・ゅ・ょ」・長音・空白・改行に対応します。</p>
-
+        <details class="maker-settings"><summary>色・サイズ・余白</summary>
         <div class="maker-options">
           <label>文字色 <input id="ink-color" type="color" value="#111111" /></label>
           <label>背景色 <input id="background-color" type="color" value="#ffffff" /></label>
@@ -67,11 +62,12 @@ app.innerHTML = `
           <button type="button" data-ink="#123c69" data-background="#f5d76e">青と黄</button>
           <button type="button" data-ink="#7b1e3a" data-background="#dff3e4">赤と緑</button>
         </div>
+        </details>
       </div>
 
       <section class="maker-preview-panel" aria-labelledby="preview-heading">
         <div class="maker-preview-heading">
-          <div><p>PREVIEW</p><h2 id="preview-heading">生成画像</h2></div>
+          <h2 id="preview-heading">生成画像</h2>
           <button id="download-png" type="button">PNGで保存</button>
         </div>
         <div class="maker-canvas-frame">
@@ -81,10 +77,6 @@ app.innerHTML = `
       </section>
     </section>
 
-    <footer>
-      <p>非公式ファンツールです。作品および権利者とは関係ありません。</p>
-      <p>公開素材は独自作図のSVGだけを使用しています。</p>
-    </footer>
   </main>
 `;
 

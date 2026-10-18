@@ -1,3 +1,5 @@
+@import "./navigation.css";
+
 :root {
   --font-sans: "Yu Gothic UI", "Hiragino Kaku Gothic ProN", Meiryo, system-ui, sans-serif;
   font-family: "Yu Gothic UI", "Hiragino Kaku Gothic ProN", Meiryo, system-ui, sans-serif;
@@ -40,6 +42,7 @@ input {
 
 .hero {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 22px;
   margin-bottom: 32px;
@@ -1604,6 +1607,13 @@ footer p {
 .file-message {
   margin-block: 10px;
   font-size: 0.9rem;
+}
+.file-message:empty {
+  display: none;
+}
+.local-benchmark h5 {
+  margin: 0 0 8px;
+  font-size: 1rem;
 }
 .preview {
   margin-top: 12px;

@@ -12,6 +12,7 @@ export default defineConfig({
       input: {
         main: `${configDirectory}index.html`,
         generator: `${configDirectory}generator.html`,
+        help: `${configDirectory}help.html`,
       },
     },
   },

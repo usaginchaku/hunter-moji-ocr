@@ -96,7 +96,6 @@ for (const glyph of horizontalGlyphs) {
   const smallResult = composeSmallKana(glyph.kana);
   if (smallResult.ok) outputKana.add(smallResult.kana);
 }
-const composedKanaCount = outputKana.size - horizontalGlyphs.length;
 
 app.innerHTML = `
   <main class="shell">
@@ -105,7 +104,10 @@ app.innerHTML = `
       <div>
         <h1>ハンター文字 <span>OCR</span></h1>
       </div>
-      <a class="generator-link" href="${import.meta.env.BASE_URL}generator.html">画像メーカー</a>
+      <nav class="site-nav" aria-label="ページ移動">
+        <a href="${import.meta.env.BASE_URL}generator.html">画像メーカー</a>
+        <a href="${import.meta.env.BASE_URL}help.html" target="_blank" rel="noopener" aria-label="使い方（別タブで開く）">使い方</a>
+      </nav>
     </header>
 
     <section class="workspace" aria-labelledby="upload-heading">
@@ -125,14 +127,12 @@ app.innerHTML = `
         />
         <span class="upload-symbol" aria-hidden="true">＋</span>
         <strong>画像を選ぶ</strong>
-        <span>または、ここにドラッグ＆ドロップ</span>
       </label>
-      <p id="file-message" class="file-message" role="status">まだ画像は選択されていません。</p>
+      <p id="file-message" class="file-message" role="status"></p>
 
       <figure class="preview" hidden>
         <div class="crop-guide">
           <label for="crop-tool">操作 <select id="crop-tool"><option value="select">範囲を選ぶ</option><option value="pan">画像を動かす</option></select></label>
-          <span>緑の枠内を読み取ります。</span>
         </div>
         <div class="crop-toolbar" aria-label="画像の表示倍率">
           <span>表示倍率</span>
@@ -196,7 +196,6 @@ app.innerHTML = `
             </div>
           </div>
           <details class="result-details" id="correction-details"><summary>文字ごとの候補を確認・修正</summary>
-            <p>得点は字形の類似度です。正しい確率ではありません。</p>
             <div id="candidate-text-notice" hidden><p>文章は手編集を保持しています。候補の変更は自動では反映されません。</p><button id="use-candidate-text" type="button">候補の文章に置き換える</button></div>
             <div id="multi-candidate-grid" class="multi-candidate-grid"></div>
           </details>
@@ -205,7 +204,6 @@ app.innerHTML = `
           <section class="ground-truth-panel" aria-labelledby="ground-truth-heading">
             <div>
               <h4 id="ground-truth-heading">正解ラベル</h4>
-              <p>自動認識の原文と、確定した正解を比較します。保存はこのブラウザ内だけで、認識の学習には使いません。</p>
             </div>
             <label for="ground-truth-input">正解文字列</label>
             <textarea id="ground-truth-input" rows="3" placeholder="例：ざんぎょう\nちゅうです"></textarea>
@@ -218,9 +216,9 @@ app.innerHTML = `
               <div><dt>行完全一致率</dt><dd id="label-line-accuracy">--</dd></div>
               <div><dt>全文一致</dt><dd id="label-exact-match">--</dd></div>
             </dl>
-            <p id="ground-truth-status" class="ground-truth-status" role="status">正解ラベルを入力すると評価します。</p>
+            <p id="ground-truth-status" class="ground-truth-status" role="status">正解を入力して確定・保存してください。</p>
             <div class="local-benchmark" aria-label="保存済み正解ラベルの集計">
-              <p class="step">LOCAL BENCHMARK</p>
+              <h5>保存済みの評価</h5>
               <dl class="label-metrics">
                 <div><dt>評価画像</dt><dd id="benchmark-image-count">0枚</dd></div>
                 <div><dt>累計文字精度</dt><dd id="benchmark-character-accuracy">--</dd></div>
@@ -232,7 +230,6 @@ app.innerHTML = `
                 <div><dt>小書き</dt><dd id="benchmark-small">--</dd></div>
                 <div><dt>全文一致</dt><dd id="benchmark-exact-rate">--</dd></div>
               </dl>
-              <p class="ground-truth-status">端末内の旧評価を含む累計です。Top-1／Top-3・濁点等は文字数が一致した画像のみの候補評価です。</p>
             </div>
           </section></details>
         </div>
@@ -242,9 +239,7 @@ app.innerHTML = `
     <details class="utility-details" id="diagnostics"><summary>検証ツール</summary>
       <section class="single-glyph-panel" aria-labelledby="single-glyph-heading">
         <div>
-          <p class="step">EXPERIMENT</p>
           <h3 id="single-glyph-heading">1文字画像を候補と照合</h3>
-          <p>白または単純な背景にある1文字を、自動で切り抜いて64×64へ整えます。</p>
         </div>
         <button id="recognize-single" type="button" disabled>この画像を照合</button>
         <div class="normalized-result" hidden>
@@ -258,35 +253,30 @@ app.innerHTML = `
 
     <section class="system-card" aria-labelledby="system-heading">
       <div>
-        <p class="step">SYSTEM</p>
-        <h2 id="system-heading">高度画像処理エンジン</h2>
+        <h2 id="system-heading">OpenCV.js（検証用）</h2>
       </div>
       <div class="engine-status" data-state="idle">
         <span class="status-dot" aria-hidden="true"></span>
         <div>
-            <strong id="opencv-status" role="status">基本認識は利用できます</strong>
-            <span id="opencv-detail">OpenCV.jsは高度な切り抜き・傾き補正用です。</span>
+            <strong id="opencv-status" role="status">OpenCV.js 未読込</strong>
+            <span id="opencv-detail"></span>
         </div>
-        <button id="opencv-retry" class="text-button" type="button">高度処理を準備</button>
+        <button id="opencv-retry" class="text-button" type="button">読み込む</button>
       </div>
     </section>
 
     <section class="template-library" aria-labelledby="template-heading">
       <div class="section-heading">
         <div>
-          <p class="step">GLYPH LIBRARY</p>
           <h2 id="template-heading">字形テンプレート</h2>
         </div>
         <span class="template-count">基本SVG ${horizontalGlyphs.length}字 · 出力 ${outputKana.size}かな</span>
       </div>
-      <p class="template-description">ここに表示する独自SVGは基本${horizontalGlyphs.length}字です。濁点・半濁点と小書きの${composedKanaCount}字は基本字形から合成し、合計${outputKana.size}字のひらがなを出力できます。</p>
       <p id="template-status" class="template-status" role="status">基本${horizontalGlyphs.length}字の64×64特徴量を生成しています。</p>
       <div class="glyph-grid">${glyphCards}</div>
       <div class="ranking-demo">
         <div>
-          <p class="step">SIMILARITY DEMO</p>
           <h3>上位3候補を確認</h3>
-          <p>登録済み字形を入力例として、複数の特徴量から候補を順位付けします。</p>
         </div>
         <div class="ranking-controls">
           <label for="ranking-input">入力字形</label>
@@ -301,9 +291,7 @@ app.innerHTML = `
       </div>
       <div class="robustness-check">
         <div>
-          <p class="step">TEMPLATE SELF-CHECK</p>
           <h3>テンプレートの位置ずれ検査</h3>
-          <p>独自SVGを上下左右へ2pxずらした内部検査です。実写画像のOCR精度ではありません。</p>
         </div>
         <button id="robustness-run" type="button" disabled>再評価</button>
         <dl class="evaluation-metrics">
@@ -315,9 +303,7 @@ app.innerHTML = `
       </div>
       <div class="modifier-demo">
         <div>
-          <p class="step">COMPOSITION</p>
           <h3>濁点・半濁点の合成</h3>
-          <p>文字本体と修飾記号を別レイヤーとして扱い、最後にかなへ合成します。</p>
         </div>
         <div class="modifier-controls">
           <label for="modifier-base">基底文字</label>
@@ -337,9 +323,7 @@ app.innerHTML = `
       </div>
       <div class="small-form-demo">
         <div>
-          <p class="step">SMALL FORM</p>
           <h3>小書き文字の合成</h3>
-          <p>基本字形を70%へ縮小し、行内の相対サイズを保ったまま小書きかなへ変換します。</p>
         </div>
         <label for="small-form-base">基本字形</label>
         <select id="small-form-base">
@@ -354,16 +338,6 @@ app.innerHTML = `
     </section>
 
     </details>
-    <details class="utility-details" id="about"><summary>使い方・このツールについて</summary>
-      <p>横書き・単純な背景・鮮明な印刷文字が対象です。画像を選び、必要なら範囲を囲んで「読み取る」を押してください。結果は原画像と見比べ、文章を直してコピーできます。</p>
-      <p>PNG・JPEG・WebP、最大20 MB。画像は端末内で処理し、外部へ送信しません。複雑な背景や手書き、縦書きには対応していません。</p>
-      <p>再認識中も文章は編集できます。手修正があるときは、新しい結果へ切り替えるか選べます。結果と編集はこのページ内で保持し、ページを閉じると失われます。</p>
-      <p>非公式ファンツールです。作品および権利者とは関係ありません。</p>
-    </details>
-    <footer>
-      <p>非公式ファンツールです。作品および権利者とは関係ありません。</p>
-      <p>試験版</p>
-    </footer>
   </main>
 `;
 
@@ -945,21 +919,17 @@ window.addEventListener("resize", () => layoutCropPreview());
 function setOpenCvState(state: OpenCvLoadState, detail?: string): void {
   engineStatus.dataset.state = state;
   retryButton.hidden = state === "loading" || state === "ready";
-  retryButton.textContent = state === "error" ? "再試行" : "高度処理を準備";
+  retryButton.textContent = state === "error" ? "再試行" : "読み込む";
 
   const labels: Record<OpenCvLoadState, string> = {
-    idle: "基本認識は利用できます",
+    idle: "OpenCV.js 未読込",
     loading: "OpenCV.js を読み込み中",
     ready: "OpenCV.js の準備ができました",
     error: "OpenCV.js を読み込めませんでした",
   };
 
   opencvStatus.textContent = labels[state];
-  opencvDetail.textContent =
-    detail ??
-    (state === "ready"
-      ? "高度な切り抜き・傾き補正を追加できる状態です。"
-      : "OpenCV.jsは高度な切り抜き・傾き補正用です。");
+  opencvDetail.textContent = detail ?? "";
 }
 
 async function initializeOpenCv(): Promise<void> {
@@ -979,7 +949,7 @@ window.addEventListener("beforeunload", () => {
   if (resultPreviewUrl) URL.revokeObjectURL(resultPreviewUrl);
 });
 
-setOpenCvState("idle", "必要になったときに画像処理エンジンを準備します。");
+setOpenCvState("idle");
 
 let loadedGlyphTemplates: LoadedGlyphTemplate[] = [];
 

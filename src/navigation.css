@@ -1,0 +1,39 @@
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #cbd5ce;
+  border-radius: 8px;
+  color: #135234;
+  background: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+  touch-action: manipulation;
+}
+
+.site-nav a:hover {
+  background: #edf2ed;
+}
+
+.site-nav a:focus-visible {
+  outline: 3px solid #21734a;
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .site-nav {
+    flex-basis: 100%;
+  }
+}

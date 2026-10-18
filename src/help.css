@@ -1,0 +1,94 @@
+@import "./navigation.css";
+
+:root {
+  color: #1e2923;
+  background: #edf2ed;
+  font-family: "Yu Gothic UI", "Hiragino Sans", system-ui, sans-serif;
+  line-height: 1.75;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  min-width: 320px;
+  margin: 0;
+}
+.help-shell {
+  width: min(100% - 32px, 800px);
+  margin: auto;
+  padding: 20px 0 32px;
+}
+.help-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+h2 {
+  margin: 0 0 12px;
+  font-size: 1.25rem;
+}
+h3 {
+  margin: 20px 0 8px;
+  font-size: 1rem;
+}
+p {
+  margin: 0 0 12px;
+}
+.help-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 16px;
+  margin: 16px 0;
+}
+.help-index a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+a {
+  color: #135234;
+  text-underline-offset: 3px;
+}
+a:focus-visible {
+  outline: 3px solid #21734a;
+  outline-offset: 3px;
+}
+section {
+  margin-top: 16px;
+  padding: 24px;
+  border: 1px solid #cbd5ce;
+  border-radius: 16px;
+  background: #fff;
+  scroll-margin-top: 16px;
+}
+ol {
+  margin: 0;
+  padding-left: 1.5em;
+}
+li + li {
+  margin-top: 8px;
+}
+dl {
+  margin: 0;
+}
+dt {
+  font-weight: 700;
+  margin-top: 12px;
+}
+dd {
+  margin: 4px 0 0;
+}
+@media (max-width: 600px) {
+  .help-shell {
+    width: calc(100% - 24px);
+    padding-top: 12px;
+  }
+  section {
+    padding: 16px;
+  }
+}

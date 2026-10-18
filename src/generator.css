@@ -1,3 +1,5 @@
+@import "./navigation.css";
+
 :root {
   color: #16231d;
   background: #edf2ed;
@@ -25,81 +27,41 @@ textarea {
 }
 
 .maker-shell {
-  width: min(100% - 32px, 1080px);
+  width: min(100% - 32px, 920px);
   margin: 0 auto;
-  padding: 42px 0 30px;
+  padding: 20px 0 30px;
 }
 
 .maker-hero {
   display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 0 4px 24px;
-}
-
-.maker-eyebrow,
-.maker-preview-heading p {
-  margin: 0 0 5px;
-  color: #21734a;
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-}
-
-.maker-beta {
-  display: inline-flex;
-  min-height: 20px;
   align-items: center;
-  margin-left: 6px;
-  padding: 0 7px;
-  border-radius: 999px;
-  color: #fff;
-  background: #9c5a18;
-  letter-spacing: 0.08em;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .maker-hero h1 {
   margin: 0;
-  font-size: clamp(1.9rem, 6vw, 3.2rem);
-  line-height: 1.05;
+  font-size: clamp(1.35rem, 4.5vw, 2rem);
+  line-height: 1.25;
 }
 .maker-hero h1 span {
   color: #21734a;
 }
-.maker-hero > div > p:last-child {
-  margin: 9px 0 0;
-  color: #637168;
-}
-
-.maker-nav,
 #download-png {
   display: inline-flex;
-  min-height: 42px;
+  min-height: 44px;
   align-items: center;
   justify-content: center;
   padding: 0 16px;
   border: 1px solid #21734a;
-  border-radius: 11px;
+  border-radius: 8px;
   color: #175737;
   background: #fff;
   font-weight: 750;
   text-decoration: none;
   cursor: pointer;
-}
-
-.maker-note {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding: 13px 18px;
-  border: 1px solid #c6d4c9;
-  border-radius: 14px;
-  background: rgb(255 255 255 / 72%);
-  font-size: 0.78rem;
-}
-.maker-note span {
-  color: #637168;
 }
 
 .maker-workspace {
@@ -110,7 +72,7 @@ textarea {
 
 .maker-controls,
 .maker-preview-panel {
-  padding: 22px;
+  padding: 16px;
   border: 1px solid #cbd7cd;
   border-radius: 18px;
   background: rgb(255 255 255 / 88%);
@@ -134,11 +96,24 @@ textarea {
   line-height: 1.6;
 }
 
-.maker-help {
-  margin: 7px 0 17px;
-  color: #637168;
-  font-size: 0.68rem;
-  line-height: 1.6;
+.maker-settings {
+  margin-top: 12px;
+}
+.maker-settings summary {
+  min-height: 44px;
+  padding-block: 10px;
+  color: #175737;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.maker-shell :is(button, input, textarea, summary):focus-visible {
+  outline: 3px solid #21734a;
+  outline-offset: 3px;
+}
+.maker-shell button {
+  min-height: 44px;
+  touch-action: manipulation;
 }
 .maker-options {
   display: grid;
@@ -150,11 +125,12 @@ textarea {
   align-items: center;
   gap: 9px;
   color: #56645b;
-  font-size: 0.72rem;
+  min-height: 44px;
+  font-size: 0.9rem;
 }
 .maker-options input[type="color"] {
   width: 100%;
-  min-height: 34px;
+  min-height: 44px;
   padding: 2px;
   border: 1px solid #c6d4c9;
   border-radius: 8px;
@@ -162,6 +138,8 @@ textarea {
 }
 .maker-options input[type="range"] {
   width: 100%;
+  min-width: 0;
+  height: 44px;
   accent-color: #21734a;
 }
 .maker-options output {
@@ -190,7 +168,7 @@ textarea {
   color: #405047;
   background: #fff;
   cursor: pointer;
-  font-size: 0.65rem;
+  font-size: 0.9rem;
 }
 
 .maker-preview-panel {
@@ -220,10 +198,11 @@ textarea {
 
 .maker-canvas-frame {
   display: grid;
-  min-height: 360px;
+  min-height: 180px;
+  max-height: 420px;
   place-items: center;
   overflow: auto;
-  padding: 24px;
+  padding: 12px;
   border: 1px solid #cbd7cd;
   border-radius: 14px;
   background-color: #e8eee9;
@@ -251,7 +230,8 @@ textarea {
   min-height: 1.4em;
   margin: 0;
   color: #637168;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
 }
 #generator-status[data-state="success"] {
   color: #175737;
@@ -263,35 +243,16 @@ textarea {
   color: #9c2f23;
 }
 
-footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 20px 4px 0;
-  color: #6f7b73;
-  font-size: 0.66rem;
-}
-
 @media (max-width: 760px) {
   .maker-shell {
-    width: min(100% - 22px, 1080px);
-    padding-top: 28px;
-  }
-  .maker-hero,
-  footer {
-    align-items: flex-start;
-    flex-direction: column;
+    width: calc(100% - 24px);
+    padding-top: 12px;
   }
   .maker-workspace {
     grid-template-columns: 1fr;
   }
-  .maker-note {
-    flex-direction: column;
-    gap: 3px;
-  }
   .maker-canvas-frame {
-    min-height: 280px;
-    padding: 12px;
+    min-height: 140px;
   }
 }
 

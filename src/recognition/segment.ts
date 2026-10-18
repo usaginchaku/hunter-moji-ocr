@@ -37,6 +37,8 @@ export interface SegmentationOptions {
   splitValleyRatio?: number;
   forcedSplitValleyRatio?: number;
   applyOpening?: boolean;
+  trimBaselineContamination?: boolean;
+  preserveCompactSmallCandidates?: boolean;
   lineStrategy?: "all" | "bottom-anchor";
 }
 
@@ -397,7 +399,10 @@ export function segmentHorizontalText(
     height: source.height,
     pixels: source.pixels.slice(),
   };
-  if (options.applyOpening !== false && Math.min(source.width, source.height) >= 320) {
+  if (
+    options.applyOpening === true ||
+    (options.applyOpening !== false && Math.min(source.width, source.height) >= 320)
+  ) {
     const openingCandidate = openBinaryGlyph(source);
     const originalForeground = foregroundCount(source);
     const retainedRatio = originalForeground
@@ -438,7 +443,19 @@ export function segmentHorizontalText(
         width: run.width,
         height: line.height,
       });
-      if (bounds && bounds.height >= Math.max(3, Math.round(line.height * 0.25))) {
+      // A compact small glyph can be shorter than the general candidate-height cutoff.
+      const compactSmallCandidate =
+        bounds &&
+        options.preserveCompactSmallCandidates &&
+        bounds.height >= Math.max(3, Math.round(line.height * 0.18)) &&
+        bounds.width / bounds.height >= 0.75 &&
+        bounds.width / bounds.height <= 1.33 &&
+        bounds.y + bounds.height / 2 >= line.y + line.height * 0.5 &&
+        foregroundCount(crop(cleaned, bounds)) / (bounds.width * bounds.height) >= 0.6;
+      if (
+        bounds &&
+        (bounds.height >= Math.max(3, Math.round(line.height * 0.25)) || compactSmallCandidate)
+      ) {
         roughCandidates.push(
           ...splitWideBounds(
             cleaned,
@@ -453,13 +470,16 @@ export function segmentHorizontalText(
     }
   }
 
-  const baselineTrimmedCandidates = trimBaselineContamination(
-    cleaned,
-    roughCandidates,
-    maxCandidateAspectRatio,
-    splitValleyRatio,
-    forcedSplitValleyRatio,
-  );
+  const baselineTrimmedCandidates =
+    options.trimBaselineContamination === false
+      ? roughCandidates
+      : trimBaselineContamination(
+          cleaned,
+          roughCandidates,
+          maxCandidateAspectRatio,
+          splitValleyRatio,
+          forcedSplitValleyRatio,
+        );
   const populatedLineIndexes = [
     ...new Set(baselineTrimmedCandidates.map(({ detectedLineIndex }) => detectedLineIndex)),
   ];

@@ -13,6 +13,11 @@ export interface FinalTranscriptionEvaluation {
   categories: Record<"dakuten" | "handakuten" | "small", FinalCharacterEvaluation>;
   incorrectDakutenOutputs: number;
   spuriousDakutenOutputs: number;
+  byKana: Record<string, FinalCharacterEvaluation>;
+  dakutenOnNonDakutenCharacters: number;
+  insertedDakutenOutputs: number;
+  smallOnNonSmallCharacters: number;
+  insertedSmallOutputs: number;
 }
 
 function categoryOf(kana: string): "dakuten" | "handakuten" | "small" | null {
@@ -52,12 +57,19 @@ export function evaluateFinalTranscription(
     handakuten: { total: 0, correct: 0 },
     small: { total: 0, correct: 0 },
   };
+  const byKana: Record<string, FinalCharacterEvaluation> = {};
   for (const kana of expected) {
+    byKana[kana] ??= { total: 0, correct: 0 };
+    byKana[kana].total += 1;
     const category = categoryOf(kana);
     if (category) categories[category].total += 1;
   }
   let correctDakutenOutputs = 0;
   let spuriousDakutenOutputs = 0;
+  let dakutenOnNonDakutenCharacters = 0;
+  let insertedDakutenOutputs = 0;
+  let smallOnNonSmallCharacters = 0;
+  let insertedSmallOutputs = 0;
   let y = expected.length;
   let x = predicted.length;
   while (y > 0 || x > 0) {
@@ -69,18 +81,27 @@ export function evaluateFinalTranscription(
       distances[y * columns + x] === distances[(y - 1) * columns + x - 1] + (same ? 0 : 1)
     ) {
       if (same) {
+        byKana[expected[y - 1]].correct += 1;
         const category = categoryOf(expected[y - 1]);
         if (category) categories[category].correct += 1;
         if (category === "dakuten") correctDakutenOutputs += 1;
       }
-      if (categoryOf(predicted[x - 1]) === "dakuten" && categoryOf(expected[y - 1]) !== "dakuten")
+      if (categoryOf(predicted[x - 1]) === "dakuten" && categoryOf(expected[y - 1]) !== "dakuten") {
         spuriousDakutenOutputs += 1;
+        dakutenOnNonDakutenCharacters += 1;
+      }
+      if (categoryOf(predicted[x - 1]) === "small" && categoryOf(expected[y - 1]) !== "small")
+        smallOnNonSmallCharacters += 1;
       y -= 1;
       x -= 1;
     } else if (y > 0 && distances[y * columns + x] === distances[(y - 1) * columns + x] + 1) {
       y -= 1;
     } else {
-      if (categoryOf(predicted[x - 1]) === "dakuten") spuriousDakutenOutputs += 1;
+      if (categoryOf(predicted[x - 1]) === "dakuten") {
+        spuriousDakutenOutputs += 1;
+        insertedDakutenOutputs += 1;
+      }
+      if (categoryOf(predicted[x - 1]) === "small") insertedSmallOutputs += 1;
       x -= 1;
     }
   }
@@ -91,6 +112,11 @@ export function evaluateFinalTranscription(
     exactMatch: expectedNormalized === predictedNormalized,
     categories,
     spuriousDakutenOutputs,
+    byKana,
+    dakutenOnNonDakutenCharacters,
+    insertedDakutenOutputs,
+    smallOnNonSmallCharacters,
+    insertedSmallOutputs,
     incorrectDakutenOutputs:
       predicted.filter((kana) => categoryOf(kana) === "dakuten").length - correctDakutenOutputs,
   };

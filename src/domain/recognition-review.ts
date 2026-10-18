@@ -9,6 +9,15 @@ export type RecognitionReviewReason =
 
 export type RecognitionReviewState = "accepted" | "needs-review" | "unrecognized";
 
+export function recognitionReviewLabel(
+  assessment: RecognitionReviewAssessment,
+  manuallyEdited: boolean,
+): string {
+  if (assessment.state === "unrecognized") return "未認識";
+  if (assessment.state === "needs-review") return manuallyEdited ? "手動修正・要確認" : "要確認";
+  return manuallyEdited ? "手動修正" : "自動候補";
+}
+
 export interface RecognitionReviewAssessment {
   state: RecognitionReviewState;
   reasons: readonly RecognitionReviewReason[];

@@ -13,6 +13,28 @@ function rgba(pixels: Array<[number, number, number]>): Uint8ClampedArray {
 }
 
 describe("rgbaToAdaptiveBinaryGlyph", () => {
+  it.each([
+    [153, 153, 153],
+    [130, 170, 190],
+  ])("明るい縁の内側に広がる背景色 %j を文字の塊にしない", (red, green, blue) => {
+    const width = 100;
+    const height = 60;
+    const pixels = new Uint8ClampedArray(width * height * 4);
+    for (let y = 0; y < height; y++)
+      for (let x = 0; x < width; x++) {
+        const border = x < 3 || y < 3 || x >= width - 3 || y >= height - 3;
+        const ink = y >= 20 && y < 41 && [20, 45, 70].some((left) => x >= left && x < left + 5);
+        pixels.set(
+          [...(ink ? [0, 0, 0] : border ? [255, 255, 255] : [red, green, blue]), 255],
+          (y * width + x) * 4,
+        );
+      }
+    const result = rgbaToAdaptiveBinaryGlyph(pixels, width, height);
+    expect(result.pixels.reduce((sum, value) => sum + value, 0)).toBe(315);
+    expect(result.pixels[10 * width + 10]).toBe(0);
+    expect(result.pixels[30 * width + 46]).toBe(1);
+  });
+
   it("白背景の黒文字を前景にする", () => {
     const result = rgbaToAdaptiveBinaryGlyph(
       rgba([

@@ -18,6 +18,83 @@ function glyph(
 }
 
 describe("segmentHorizontalText", () => {
+  it("明示したノイズ除去では小画像の細い断片を除き、太い字形を保つ", () => {
+    const source = glyph(100, 50, [
+      [10, 12, 12, 28],
+      [40, 12, 12, 28],
+      [76, 16, 1, 20],
+    ]);
+    const result = segmentHorizontalText(source, {
+      applyOpening: true,
+      minComponentArea: 4,
+      trimBaselineContamination: false,
+    });
+    expect(result.cleaned.pixels[20 * 100 + 76]).toBe(0);
+    expect(result.cleaned.pixels[20 * 100 + 15]).toBe(1);
+    expect(result.segments).toHaveLength(2);
+  });
+
+  it("細い文字まで大部分消えるノイズ除去は採用しない", () => {
+    const source = glyph(100, 50, [
+      [10, 12, 2, 28],
+      [40, 12, 2, 28],
+      [70, 12, 2, 28],
+    ]);
+    const result = segmentHorizontalText(source, {
+      applyOpening: true,
+      minComponentArea: 4,
+      trimBaselineContamination: false,
+    });
+    expect(result.cleaned.pixels).toEqual(source.pixels);
+  });
+  it("preserves compact lower small glyphs only when explicitly enabled", () => {
+    const source = glyph(210, 55, [
+      [5, 5, 20, 40],
+      [55, 31, 8, 8],
+      [90, 31, 8, 1],
+      [90, 38, 8, 1],
+      [90, 32, 1, 6],
+      [97, 32, 1, 6],
+      [125, 6, 8, 8],
+      [160, 31, 6, 6],
+      [190, 31, 2, 2],
+    ]);
+    const options = {
+      minComponentArea: 6,
+      minLineHeight: 5,
+      applyOpening: false,
+      trimBaselineContamination: false,
+    };
+    expect(segmentHorizontalText(source, options).segments).toHaveLength(1);
+    const preserved = segmentHorizontalText(source, {
+      ...options,
+      preserveCompactSmallCandidates: true,
+    });
+    expect(preserved.segments.map(({ x, y, width, height }) => [x, y, width, height])).toEqual([
+      [5, 5, 20, 40],
+      [55, 31, 8, 8],
+    ]);
+  });
+  it("preserves normal outlines beside small glyphs when contamination trimming is disabled", () => {
+    const source = glyph(110, 70, [
+      [5, 5, 20, 50],
+      [40, 25, 18, 30],
+      [75, 25, 18, 30],
+    ]);
+    const options = { minComponentArea: 4, minLineHeight: 5, applyOpening: false };
+    const original = segmentHorizontalText(source, options);
+    expect(original.segments[0].height).toBeLessThan(50);
+    const preserved = segmentHorizontalText(source, {
+      ...options,
+      trimBaselineContamination: false,
+    });
+    expect(preserved.segments.map(({ y, height }) => [y, height])).toEqual([
+      [5, 50],
+      [25, 30],
+      [25, 30],
+    ]);
+    expect(preserved.segments.every((segment) => !segment.baselineAdjusted)).toBe(true);
+  });
   it("下線直上の切り抜きでは下端に近い文字帯だけを選べる", () => {
     const source = glyph(100, 60, [
       [5, 5, 18, 10],

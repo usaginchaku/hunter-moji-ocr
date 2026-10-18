@@ -1,4 +1,5 @@
 :root {
+  --font-sans: "Yu Gothic UI", "Hiragino Kaku Gothic ProN", Meiryo, system-ui, sans-serif;
   font-family: "Yu Gothic UI", "Hiragino Kaku Gothic ProN", Meiryo, system-ui, sans-serif;
   color: #1e2923;
   background: #e8eee8;
@@ -1540,6 +1541,370 @@ footer p {
   footer {
     flex-direction: column;
     gap: 5px;
+  }
+}
+
+/* Keep the reading path compact; diagnostics remain available on demand. */
+.shell {
+  padding-top: 20px;
+}
+.hero {
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+}
+.brand-mark span {
+  width: 23px;
+  height: 3px;
+}
+.hero h1 {
+  font-size: clamp(1.35rem, 4.5vw, 2rem);
+}
+.hero .generator-link {
+  margin-left: auto;
+  width: auto;
+  padding: 8px 12px;
+}
+.workspace {
+  padding: 18px;
+  border-radius: 16px;
+}
+.section-heading {
+  margin-bottom: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.section-heading h2 {
+  font-size: 1.15rem;
+}
+.format-note {
+  font-size: 0.8rem;
+}
+.drop-zone {
+  min-height: 112px;
+  gap: 6px;
+  padding: 14px;
+}
+.upload-symbol {
+  width: 36px;
+  height: 36px;
+  font-size: 1.5rem;
+}
+.drop-zone strong {
+  font-size: 1rem;
+}
+.drop-zone > span:last-child {
+  font-size: 0.85rem;
+}
+.file-message {
+  margin-block: 10px;
+  font-size: 0.9rem;
+}
+.preview {
+  margin-top: 12px;
+}
+.crop-guide,
+.crop-controls {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.crop-guide {
+  padding: 8px 10px;
+}
+.crop-guide label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.crop-guide span,
+#crop-status,
+#preview-caption {
+  font-size: 0.8rem;
+}
+.crop-toolbar {
+  padding: 8px 10px;
+  gap: 8px;
+}
+.crop-viewport {
+  max-height: 420px;
+  max-height: min(48vh, 420px);
+}
+.multi-glyph-panel {
+  display: block;
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.multi-glyph-panel h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.multi-recognition-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+#recognize-multiple {
+  width: auto;
+  flex: 1;
+  min-height: 44px;
+  color: white;
+  background: var(--green);
+}
+.processing-options {
+  flex: 0 1 auto;
+}
+.processing-options label {
+  display: block;
+  margin-top: 6px;
+}
+.processing-options summary {
+  padding: 10px 4px;
+}
+.shell button,
+.shell select {
+  min-height: 44px;
+  font-size: 1rem;
+  touch-action: manipulation;
+}
+.shell input,
+.shell textarea {
+  font-size: 1rem;
+}
+.shell button {
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  color: var(--green-dark);
+  background: white;
+  cursor: pointer;
+}
+.shell button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.shell button:focus-visible,
+.shell summary:focus-visible,
+.shell select:focus-visible,
+.shell textarea:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 3px;
+}
+.shell summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 10px 0;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.shell details > p {
+  line-height: 1.7;
+  font-size: 0.9rem;
+}
+.shell [hidden] {
+  display: none !important;
+}
+.single-status {
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+  margin-block: 12px;
+}
+#multi-status:empty {
+  display: none;
+}
+.multi-summary {
+  padding: 12px;
+}
+.multi-summary > label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+#multi-text {
+  display: block;
+  width: 100%;
+  min-height: 112px;
+  max-height: 50vh;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  font: 1rem/1.7 var(--font-sans);
+  color: var(--ink);
+  background: white;
+}
+#text-review-status,
+#copy-multi-status {
+  display: block;
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+.multi-output-actions {
+  gap: 8px;
+}
+#copy-multi-text {
+  color: white;
+  background: var(--green);
+  border-color: var(--green);
+}
+.result-image img {
+  display: block;
+  max-width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+}
+.result-image summary {
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+.result-details,
+.result-image {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 4px;
+  min-width: 0;
+}
+.result-details pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 1rem/1.7 var(--font-sans);
+}
+.pending-result {
+  padding: 12px;
+  margin-top: 12px;
+  border: 1px solid var(--green);
+  border-radius: 10px;
+  background: #f0f7ed;
+}
+.pending-result p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.pending-result button {
+  margin: 0 6px 6px 0;
+}
+.multi-candidate-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 12px;
+}
+.multi-candidate-card {
+  grid-template-columns: 64px minmax(0, 1fr);
+  padding: 12px;
+}
+.multi-candidate-card canvas {
+  grid-row: 2 / span 4;
+  width: 64px;
+  height: 64px;
+}
+.recognition-review-badge {
+  position: static;
+  grid-column: 2;
+  justify-self: end;
+  font-size: 0.8rem;
+}
+.multi-candidate-card label {
+  font-size: 0.9rem;
+}
+.multi-candidate-card select {
+  min-width: 0;
+}
+.multi-order {
+  width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
+}
+.multi-resolved-output {
+  font-size: 0.9rem;
+}
+.base-auto-reset {
+  font-size: 0.9rem;
+}
+.ground-truth-panel {
+  display: block;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+.ground-truth-panel p:not(.step),
+.ground-truth-status {
+  font-size: 0.9rem;
+}
+.ground-truth-actions {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.label-metrics {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.label-metrics dt {
+  font-size: 0.8rem;
+}
+.label-metrics dd {
+  font-size: 1rem;
+}
+.utility-details {
+  border-bottom: 1px solid var(--line);
+  margin-top: 8px;
+  padding: 4px 12px;
+}
+#diagnostics > section {
+  margin-block: 12px;
+}
+footer {
+  margin-top: 16px;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+@media (max-width: 600px) {
+  .shell {
+    width: calc(100% - 24px);
+    padding-top: 12px;
+  }
+  .hero {
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+  }
+  .hero h1 {
+    font-size: 1.35rem;
+    letter-spacing: -0.03em;
+  }
+  .hero .generator-link {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+  .workspace {
+    padding: 12px;
+  }
+  .crop-toolbar input[type="range"] {
+    flex-basis: 90px;
+    min-width: 70px;
+  }
+  .crop-guide label {
+    width: 100%;
+  }
+  .crop-toolbar button {
+    padding-inline: 10px;
+  }
+  .multi-candidate-grid {
+    grid-template-columns: 1fr;
+  }
+  .local-benchmark .label-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

@@ -2,6 +2,38 @@ import { describe, expect, it } from "vitest";
 import { evaluateFinalTranscription } from "../src/recognition/final-transcription-evaluation";
 
 describe("final transcription acceptance metrics", () => {
+  it("counts false small assignments and insertions without dropping missing small kana", () => {
+    expect(evaluateFinalTranscription("いぁっ", "ぃあつ")).toMatchObject({
+      categories: { small: { correct: 0, total: 2 } },
+      smallOnNonSmallCharacters: 1,
+      insertedSmallOutputs: 0,
+    });
+    expect(evaluateFinalTranscription("か", "ゃか")).toMatchObject({
+      smallOnNonSmallCharacters: 0,
+      insertedSmallOutputs: 1,
+    });
+    expect(evaluateFinalTranscription("ぁぃぅぇぉっゃゅょ", "").categories.small).toEqual({
+      total: 9,
+      correct: 0,
+    });
+  });
+  it("counts each kana including omissions and separates attached and inserted marks", () => {
+    expect(evaluateFinalTranscription("がぎぐか", "がきぐが")).toMatchObject({
+      byKana: {
+        が: { total: 1, correct: 1 },
+        ぎ: { total: 1, correct: 0 },
+        ぐ: { total: 1, correct: 1 },
+        か: { total: 1, correct: 0 },
+      },
+      dakutenOnNonDakutenCharacters: 1,
+      insertedDakutenOutputs: 0,
+    });
+    expect(evaluateFinalTranscription("ぎぎ", "").byKana).toEqual({ ぎ: { total: 2, correct: 0 } });
+    expect(evaluateFinalTranscription("あ", "があ")).toMatchObject({
+      dakutenOnNonDakutenCharacters: 0,
+      insertedDakutenOutputs: 1,
+    });
+  });
   it("retains all expected categories when OCR is empty or missing characters", () => {
     expect(evaluateFinalTranscription("がぽっ", "")).toMatchObject({
       editDistance: 3,

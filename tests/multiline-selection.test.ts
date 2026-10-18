@@ -55,7 +55,102 @@ const simpleBackground: ImagePreprocessing = {
   luminanceRange: [0, 255],
 };
 
+describe("framed background recovery", () => {
+  function surfaceVariants(clipped: boolean) {
+    const source = PUBLIC_EVALUATION_CASES[0].image;
+    const pixels = source.pixels.slice();
+    if (clipped) {
+      pixels.fill(0);
+      for (let y = 0; y < source.height; y++)
+        for (let x = 2; x < source.width; x++)
+          pixels[y * source.width + x - 2] = source.pixels[y * source.width + x];
+    }
+    return [
+      {
+        mode: "background" as const,
+        label: "背景色との差",
+        binary: { ...source, pixels: new Uint8Array(source.pixels.length) },
+      },
+      {
+        mode: "background" as const,
+        label: "背景色との差（背景面補正）",
+        backgroundCorrected: true,
+        binary: { ...source, pixels },
+      },
+    ];
+  }
+
+  it("余白内に収まる字形を背景面の候補から回復する", () => {
+    const selected = runRecognitionPipeline(surfaceVariants(false), templates, "auto").selected;
+    expect(selected?.id).toBe("background-surface");
+    expect(selected?.recognized.map((glyph) => glyph.automaticBaseKana).join("")).toBe("あいう");
+  });
+
+  it("画像端で途切れる候補を自動回復の根拠にしない", () => {
+    expect(runRecognitionPipeline(surfaceVariants(true), templates, "auto").selected).toBeNull();
+  });
+
+  it("手動方式の従来の候補を補正候補で置き換えない", () => {
+    expect(
+      runRecognitionPipeline(surfaceVariants(false), templates, "background").selected,
+    ).toBeNull();
+  });
+});
+
+function shortLineImage(isolated = false) {
+  const width = 45;
+  const height = 48;
+  const pixels = new Uint8Array(width * height);
+  const placements: [number, number, number][] = [
+    [0, 3, 3],
+    [1, 14, 3],
+    [2, isolated ? 34 : 3, 19],
+    [1, 3, 35],
+    [0, 14, 35],
+  ];
+  for (const [index, x, y] of placements) {
+    const glyph = PUBLIC_EVALUATION_GLYPHS[index].binary;
+    for (let row = 0; row < glyph.height; row++)
+      for (let column = 0; column < glyph.width; column++)
+        pixels[(y + row) * width + x + column] = glyph.pixels[row * glyph.width + column];
+  }
+  return { width, height, pixels };
+}
+
+function recognizeShortLine(isolated = false) {
+  const calibrated = templates.map((template, index) => {
+    const { width, height } = PUBLIC_EVALUATION_GLYPHS[index].binary;
+    return {
+      ...template,
+      sourceBounds: { x: 12, y: 4, width: width * 8, height: height * 8 },
+    };
+  });
+  return runRecognitionPipeline(
+    [
+      {
+        mode: "background",
+        label: "背景色との差",
+        binary: shortLineImage(isolated),
+        preprocessing: simpleBackground,
+      },
+    ],
+    calibrated,
+    "auto",
+  ).selected;
+}
+
 describe("confident complete lines", () => {
+  it("文字サイズと隣の行の範囲が揃う1文字行を保持する", () => {
+    const selected = recognizeShortLine();
+    expect(selected?.id).toBe("background");
+    expect(selected?.recognized.map((glyph) => glyph.automaticBaseKana).join("")).toBe(
+      "あいういあ",
+    );
+  });
+
+  it("字形が似ていても本文の外に孤立した候補では全行へ切り替えない", () => {
+    expect(recognizeShortLine(true)?.id).toBe("background-bottom-anchor");
+  });
   it.each(["dark-text", "light-text"] as const)(
     "retains both recognized lines for %s",
     (polarity) => {

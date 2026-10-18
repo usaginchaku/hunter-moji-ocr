@@ -4,6 +4,7 @@ import {
   formatFileSize,
   MAX_IMAGE_BYTES,
   validateImageFile,
+  validateImageDimensions,
 } from "./app/file-validation";
 import {
   composeKana,
@@ -12,7 +13,8 @@ import {
   type KanaModifier,
 } from "./domain/kana-composition";
 import { composeSmallKana, SMALL_KANA_BASES } from "./domain/small-kana";
-import { assessRecognitionReview } from "./domain/recognition-review";
+import { assessRecognitionReview, recognitionReviewLabel } from "./domain/recognition-review";
+import { ReadingSession } from "./domain/reading-session";
 import {
   resolveGlyphModifier,
   resolveGlyphOutput,
@@ -101,25 +103,14 @@ app.innerHTML = `
     <header class="hero">
       <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
       <div>
-        <p class="eyebrow">HUNTER MOJI READER</p>
         <h1>ハンター文字 <span>OCR</span></h1>
-        <p class="lead">画像の文字を、読めるひらがなへ。</p>
       </div>
-      <a class="generator-link" href="${import.meta.env.BASE_URL}generator.html">文字画像を作る</a>
+      <a class="generator-link" href="${import.meta.env.BASE_URL}generator.html">画像メーカー</a>
     </header>
-
-    <section class="privacy-note" aria-label="プライバシーについて">
-      <span class="privacy-icon" aria-hidden="true">✓</span>
-      <div>
-        <strong>画像は端末の外へ送信されません</strong>
-        <p>選択した画像は、このブラウザ内だけで処理します。</p>
-      </div>
-    </section>
 
     <section class="workspace" aria-labelledby="upload-heading">
       <div class="section-heading">
         <div>
-          <p class="step">STEP 01</p>
           <h2 id="upload-heading">画像を選択</h2>
         </div>
         <span class="format-note">PNG・JPEG・WebP / 最大 ${formatFileSize(MAX_IMAGE_BYTES)}</span>
@@ -140,8 +131,8 @@ app.innerHTML = `
 
       <figure class="preview" hidden>
         <div class="crop-guide">
-          <strong>左ドラッグで範囲選択・右ドラッグで画像移動</strong>
-          <span>ホイールで拡大縮小できます。緑の枠内だけを処理します。</span>
+          <label for="crop-tool">操作 <select id="crop-tool"><option value="select">範囲を選ぶ</option><option value="pan">画像を動かす</option></select></label>
+          <span>緑の枠内を読み取ります。</span>
         </div>
         <div class="crop-toolbar" aria-label="画像の表示倍率">
           <span>表示倍率</span>
@@ -164,30 +155,12 @@ app.innerHTML = `
         <figcaption id="preview-caption"></figcaption>
       </figure>
 
-      <section class="single-glyph-panel" aria-labelledby="single-glyph-heading">
-        <div>
-          <p class="step">EXPERIMENT</p>
-          <h3 id="single-glyph-heading">1文字画像を候補と照合</h3>
-          <p>白または単純な背景にある1文字を、自動で切り抜いて64×64へ整えます。</p>
-        </div>
-        <button id="recognize-single" type="button" disabled>この画像を照合</button>
-        <div class="normalized-result" hidden>
-          <canvas id="normalized-preview" aria-label="正規化した二値画像"></canvas>
-          <div>
-            <p id="single-status" class="single-status" role="status"></p>
-            <ol id="single-candidate-results" class="candidate-results" aria-live="polite"></ol>
-          </div>
-        </div>
-      </section>
-
       <section class="multi-glyph-panel" aria-labelledby="multi-glyph-heading">
         <div>
-          <p class="step">MULTI OCR · BETA</p>
-          <h3 id="multi-glyph-heading">複数文字画像を認識</h3>
-          <p>白または単純な背景から行と文字候補を切り出し、左から右・上から下へ照合します。</p>
+          <h3 id="multi-glyph-heading">読み取り</h3>
         </div>
         <div class="multi-recognition-actions">
-          <label for="binarization-mode">
+          <details class="processing-options"><summary>背景処理</summary><label for="binarization-mode">
             背景処理
             <select id="binarization-mode">
               <option value="auto">自動選択</option>
@@ -199,29 +172,46 @@ app.innerHTML = `
               <option value="neutral-ink">無彩色の黒線</option>
             </select>
           </label>
-          <button id="recognize-multiple" type="button" disabled>複数文字を認識</button>
+          </details>
+          <button id="recognize-multiple" type="button" disabled>読み取る</button>
+          <button id="cancel-recognition" type="button" hidden>中止</button>
+        </div>
+        <p id="multi-status" class="single-status" role="status"></p>
+        <div id="pending-result" class="pending-result" hidden>
+          <p id="pending-message" role="status"></p>
+          <button id="accept-result" type="button">新しい結果に切り替え</button>
+          <button id="keep-result" type="button">今の編集を続ける</button>
         </div>
         <div class="multi-result" hidden>
+          <details class="result-image"><summary id="result-source"></summary><img id="result-source-image" alt="この認識結果の元画像" /></details>
           <div class="multi-summary">
-            <p id="multi-status" class="single-status" role="status"></p>
-            <pre id="multi-text" aria-label="複数文字の認識結果"></pre>
+            <label for="multi-text">文章を確認・編集</label>
+            <textarea id="multi-text" rows="4" aria-describedby="text-review-status" spellcheck="false"></textarea>
+            <span id="text-review-status" role="status"></span>
             <div class="multi-output-actions">
-              <button id="copy-multi-text" type="button" disabled>結果をコピー</button>
+              <button id="copy-multi-text" type="button" disabled>コピー</button>
+              <button id="confirm-text" type="button">文章を確認済みにする</button>
+              <button id="restore-result" type="button" hidden>直前の結果に戻る</button>
               <span id="copy-multi-status" role="status"></span>
             </div>
           </div>
-          <div id="multi-candidate-grid" class="multi-candidate-grid" aria-live="polite"></div>
+          <details class="result-details" id="correction-details"><summary>文字ごとの候補を確認・修正</summary>
+            <p>得点は字形の類似度です。正しい確率ではありません。</p>
+            <div id="candidate-text-notice" hidden><p>文章は手編集を保持しています。候補の変更は自動では反映されません。</p><button id="use-candidate-text" type="button">候補の文章に置き換える</button></div>
+            <div id="multi-candidate-grid" class="multi-candidate-grid"></div>
+          </details>
+          <details class="result-details"><summary>自動認識の原文・処理情報</summary><pre id="automatic-text"></pre><p id="recognition-details"></p></details>
+          <details class="result-details" id="evaluation-details"><summary>正解を登録して評価</summary>
           <section class="ground-truth-panel" aria-labelledby="ground-truth-heading">
             <div>
-              <p class="step">GROUND TRUTH</p>
               <h4 id="ground-truth-heading">正解ラベル</h4>
-              <p>画像の正しい読みを行ごとに入力します。ラベルはこのブラウザ内だけに保存されます。</p>
+              <p>自動認識の原文と、確定した正解を比較します。保存はこのブラウザ内だけで、認識の学習には使いません。</p>
             </div>
             <label for="ground-truth-input">正解文字列</label>
             <textarea id="ground-truth-input" rows="3" placeholder="例：ざんぎょう\nちゅうです"></textarea>
             <div class="ground-truth-actions">
-              <button id="use-recognized-text" type="button" disabled>認識結果を反映</button>
-              <button id="save-ground-truth" type="button">この画像の正解を保存</button>
+              <button id="use-recognized-text" type="button" disabled>編集中の文章を下書きへ</button>
+              <button id="save-ground-truth" type="button">正解として確定・保存</button>
             </div>
             <dl class="label-metrics">
               <div><dt>文字精度</dt><dd id="label-character-accuracy">--</dd></div>
@@ -242,12 +232,29 @@ app.innerHTML = `
                 <div><dt>小書き</dt><dd id="benchmark-small">--</dd></div>
                 <div><dt>全文一致</dt><dd id="benchmark-exact-rate">--</dd></div>
               </dl>
-              <p class="ground-truth-status">保存した正解ラベルを再認識すると、端末内だけで集計します。</p>
+              <p class="ground-truth-status">端末内の旧評価を含む累計です。Top-1／Top-3・濁点等は文字数が一致した画像のみの候補評価です。</p>
             </div>
-          </section>
+          </section></details>
         </div>
       </section>
     </section>
+
+    <details class="utility-details" id="diagnostics"><summary>検証ツール</summary>
+      <section class="single-glyph-panel" aria-labelledby="single-glyph-heading">
+        <div>
+          <p class="step">EXPERIMENT</p>
+          <h3 id="single-glyph-heading">1文字画像を候補と照合</h3>
+          <p>白または単純な背景にある1文字を、自動で切り抜いて64×64へ整えます。</p>
+        </div>
+        <button id="recognize-single" type="button" disabled>この画像を照合</button>
+        <div class="normalized-result" hidden>
+          <canvas id="normalized-preview" aria-label="正規化した二値画像"></canvas>
+          <div>
+            <p id="single-status" class="single-status" role="status"></p>
+            <ol id="single-candidate-results" class="candidate-results" aria-live="polite"></ol>
+          </div>
+        </div>
+      </section>
 
     <section class="system-card" aria-labelledby="system-heading">
       <div>
@@ -346,18 +353,16 @@ app.innerHTML = `
       </div>
     </section>
 
-    <section class="coming-next" aria-label="今後追加する機能">
-      <p class="step">COMING NEXT</p>
-      <div class="next-grid">
-        <span>傾き・遠近を補正</span>
-        <span>縦書きへ対応</span>
-        <span>正解ラベルから候補を補正</span>
-      </div>
-    </section>
-
+    </details>
+    <details class="utility-details" id="about"><summary>使い方・このツールについて</summary>
+      <p>横書き・単純な背景・鮮明な印刷文字が対象です。画像を選び、必要なら範囲を囲んで「読み取る」を押してください。結果は原画像と見比べ、文章を直してコピーできます。</p>
+      <p>PNG・JPEG・WebP、最大20 MB。画像は端末内で処理し、外部へ送信しません。複雑な背景や手書き、縦書きには対応していません。</p>
+      <p>再認識中も文章は編集できます。手修正があるときは、新しい結果へ切り替えるか選べます。結果と編集はこのページ内で保持し、ページを閉じると失われます。</p>
+      <p>非公式ファンツールです。作品および権利者とは関係ありません。</p>
+    </details>
     <footer>
       <p>非公式ファンツールです。作品および権利者とは関係ありません。</p>
-      <p>現在は試験版です。認識結果は候補と正解ラベルで確認してください。</p>
+      <p>試験版</p>
     </footer>
   </main>
 `;
@@ -401,7 +406,7 @@ const recognizeMultiple = getRequiredElement<HTMLButtonElement>("#recognize-mult
 const binarizationMode = getRequiredElement<HTMLSelectElement>("#binarization-mode");
 const multiResult = getRequiredElement<HTMLElement>(".multi-result");
 const multiStatus = getRequiredElement<HTMLParagraphElement>("#multi-status");
-const multiText = getRequiredElement<HTMLElement>("#multi-text");
+const multiText = getRequiredElement<HTMLTextAreaElement>("#multi-text");
 const copyMultiText = getRequiredElement<HTMLButtonElement>("#copy-multi-text");
 const copyMultiStatus = getRequiredElement<HTMLElement>("#copy-multi-status");
 const multiCandidateGrid = getRequiredElement<HTMLElement>("#multi-candidate-grid");
@@ -449,20 +454,41 @@ let cropPanStart: {
   scrollTop: number;
 } | null = null;
 let cropZoom = 1;
-let groundTruthAutoLinked = true;
+interface ReadingSource {
+  file: File;
+  crop: NormalizedCrop | null;
+  recognized: RuntimeRecognizedGlyph[];
+  summary: string;
+  details: string;
+}
+const readingSession = new ReadingSession<ReadingSource>();
+const cancelRecognition = getRequiredElement<HTMLButtonElement>("#cancel-recognition");
+const pendingResult = getRequiredElement<HTMLElement>("#pending-result");
+const pendingMessage = getRequiredElement<HTMLElement>("#pending-message");
+const resultSource = getRequiredElement<HTMLElement>("#result-source");
+const resultSourceImage = getRequiredElement<HTMLImageElement>("#result-source-image");
+const textReviewStatus = getRequiredElement<HTMLElement>("#text-review-status");
+const confirmText = getRequiredElement<HTMLButtonElement>("#confirm-text");
+const restoreResult = getRequiredElement<HTMLButtonElement>("#restore-result");
+const candidateTextNotice = getRequiredElement<HTMLElement>("#candidate-text-notice");
+const cropTool = getRequiredElement<HTMLSelectElement>("#crop-tool");
+let resultPreviewUrl: string | null = null;
+let imageSelectionRevision = 0;
+let imageLoading = false;
 let lastCropWheelZoomAt = Number.NEGATIVE_INFINITY;
 const MIN_CROP_ZOOM = 1;
 const MAX_CROP_ZOOM = 4;
 const CROP_ZOOM_STEP = 0.25;
 const EVALUATION_STORAGE_KEY = "hunter-moji-ocr:evaluation-records:v1";
 
-function groundTruthStorageKey(file: File): string {
-  return `hunter-moji-ocr:ground-truth:${file.name}:${file.size}:${file.lastModified}`;
+function groundTruthStorageKey(file: File, crop: NormalizedCrop | null = null): string {
+  const legacy = `hunter-moji-ocr:ground-truth:${file.name}:${file.size}:${file.lastModified}`;
+  return crop ? `${legacy}:crop:${JSON.stringify(crop)}` : legacy;
 }
 
-function loadGroundTruth(file: File): string {
+function loadGroundTruth(file: File, crop: NormalizedCrop | null): string {
   try {
-    return localStorage.getItem(groundTruthStorageKey(file)) ?? "";
+    return localStorage.getItem(groundTruthStorageKey(file, crop)) ?? "";
   } catch {
     return "";
   }
@@ -550,14 +576,14 @@ function resolveAutomaticCandidateKana(item: RuntimeRecognizedGlyph, baseKana: s
   return resolveGlyphOutput(baseKana, "auto", item.automaticSize, modifier).kana;
 }
 
-function automaticRecognitionEvaluationData(): {
+function automaticRecognitionEvaluationData(glyphs = currentRecognizedGlyphs): {
   predicted: string;
   topCandidates: string[][];
 } | null {
-  if (currentRecognizedGlyphs.length === 0) return null;
+  if (glyphs.length === 0) return null;
   const lines = new Map<number, string[]>();
   const topCandidates: string[][] = [];
-  for (const item of currentRecognizedGlyphs) {
+  for (const item of glyphs) {
     const resolvedCandidates = item.candidates.map(({ kana }) =>
       resolveAutomaticCandidateKana(item, kana),
     );
@@ -576,18 +602,16 @@ function automaticRecognitionEvaluationData(): {
 }
 
 function updateStoredEvaluation(): void {
-  if (!selectedImageFile || groundTruthInput.dataset.source !== "saved") return;
+  const result = readingSession.current;
+  if (!result || result.confirmedExpected === null) return;
   const records = loadEvaluationRecords();
-  const key = groundTruthStorageKey(selectedImageFile);
-  const expected = groundTruthInput.value.trim();
+  const key = groundTruthStorageKey(result.source.file, result.source.crop);
+  const expected = result.confirmedExpected.trim();
   if (!expected) {
     delete records[key];
   } else {
     const automatic = automaticRecognitionEvaluationData();
-    const evaluation = evaluateTranscription(
-      automatic?.predicted ?? multiText.textContent ?? "",
-      expected,
-    );
+    const evaluation = evaluateTranscription(result.automaticText, expected);
     const detailed = automatic
       ? evaluateDetailedRecognition(expected, automatic.predicted, automatic.topCandidates)
       : null;
@@ -616,9 +640,25 @@ function updateStoredEvaluation(): void {
 }
 
 function updateSingleRecognitionAvailability(): void {
-  const unavailable = selectedImageFile === null || loadedGlyphTemplates.length === 0;
+  const busy = activeRecognitionController !== null || imageLoading;
+  const unavailable = selectedImageFile === null || loadedGlyphTemplates.length === 0 || busy;
   recognizeSingle.disabled = unavailable;
   recognizeMultiple.disabled = unavailable;
+  recognizeMultiple.textContent = activeRecognitionController ? "読み取り中…" : "読み取る";
+  cancelRecognition.hidden = !busy;
+}
+
+function cancelCurrentWork(message?: string): void {
+  activeRecognitionController?.abort();
+  activeRecognitionController = null;
+  imageSelectionRevision += 1;
+  imageLoading = false;
+  readingSession.cancel();
+  if (message) {
+    multiStatus.textContent = message;
+    multiStatus.dataset.state = "cancelled";
+  }
+  updateSingleRecognitionAvailability();
 }
 
 function renderCropSelection(message?: string): void {
@@ -696,11 +736,8 @@ function pointerPositionInPreview(event: PointerEvent): { x: number; y: number }
 }
 
 function invalidateRecognitionResults(): void {
-  activeRecognitionController?.abort();
-  activeRecognitionController = null;
+  cancelCurrentWork("範囲を変更しました。表示中の結果と編集は前回の読み取りを保持しています。");
   normalizedResult.hidden = true;
-  multiResult.hidden = true;
-  useRecognizedText.disabled = true;
 }
 
 function finishCropDrag(): void {
@@ -716,48 +753,73 @@ function finishCropDrag(): void {
   cropBeforeDrag = null;
 }
 
-function showImage(file: File): void {
-  activeRecognitionController?.abort();
-  activeRecognitionController = null;
+async function showImage(file: File): Promise<void> {
+  const selection = ++imageSelectionRevision;
   const validation = validateImageFile(file);
   if (!validation.ok) {
-    selectedImageFile = null;
+    imageLoading = false;
     fileMessage.textContent = validation.message;
     fileMessage.dataset.state = "error";
     input.value = "";
     updateSingleRecognitionAvailability();
     return;
   }
-
-  if (previewUrl) URL.revokeObjectURL(previewUrl);
-  previewUrl = URL.createObjectURL(file);
-  previewImage.src = previewUrl;
-  previewCaption.textContent = `${file.name} · ${formatFileSize(file.size)}`;
-  preview.hidden = false;
-  normalizedResult.hidden = true;
-  multiResult.hidden = true;
-  useRecognizedText.disabled = true;
-  selectedImageFile = file;
-  selectedCrop = null;
-  cropDragStart = null;
-  cropPanStart = null;
-  delete cropStage.dataset.panning;
-  cropZoom = MIN_CROP_ZOOM;
-  renderCropZoom();
-  renderCropSelection();
-  const savedGroundTruth = loadGroundTruth(file);
-  groundTruthInput.value = savedGroundTruth;
-  groundTruthAutoLinked = savedGroundTruth.trim().length === 0;
-  groundTruthInput.dataset.source = savedGroundTruth.trim() ? "saved" : "recognition";
-  renderLabelEvaluation();
-  fileMessage.textContent = "画像を端末内に読み込みました。外部への送信は行っていません。";
-  fileMessage.dataset.state = "success";
+  activeRecognitionController?.abort();
+  activeRecognitionController = null;
+  readingSession.cancel();
+  imageLoading = true;
   updateSingleRecognitionAvailability();
+  fileMessage.textContent = "画像を読み込んでいます。";
+  const nextUrl = URL.createObjectURL(file);
+  let committed = false;
+  try {
+    const image = new Image();
+    image.src = nextUrl;
+    await image.decode();
+    const dimensions = validateImageDimensions(image.naturalWidth, image.naturalHeight);
+    if (!dimensions.ok) throw new Error(dimensions.message);
+    if (selection !== imageSelectionRevision) return;
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    previewUrl = nextUrl;
+    committed = true;
+    previewImage.src = nextUrl;
+    previewCaption.textContent = `${file.name} · ${formatFileSize(file.size)}`;
+    preview.hidden = false;
+    normalizedResult.hidden = true;
+    selectedImageFile = file;
+    selectedCrop = null;
+    cropDragStart = null;
+    cropPanStart = null;
+    delete cropStage.dataset.panning;
+    cropZoom = MIN_CROP_ZOOM;
+    renderCropZoom();
+    renderCropSelection();
+    fileMessage.textContent = "画像を選択しました。必要なら範囲を囲んでください。";
+    fileMessage.dataset.state = "success";
+    multiStatus.textContent = readingSession.current
+      ? "画像を切り替えました。下の結果は表示された元画像の読み取りです。"
+      : "";
+    delete multiStatus.dataset.state;
+  } catch (error) {
+    if (selection !== imageSelectionRevision) return;
+    fileMessage.textContent =
+      error instanceof Error && error.message.includes("上限")
+        ? error.message
+        : "画像を読み込めませんでした。別のPNG・JPEG・WebPを選んでください。前の画像と編集は保持しています。";
+    fileMessage.dataset.state = "error";
+    input.value = "";
+  } finally {
+    if (!committed) URL.revokeObjectURL(nextUrl);
+    if (selection === imageSelectionRevision) {
+      imageLoading = false;
+      updateSingleRecognitionAvailability();
+    }
+  }
 }
 
 input.addEventListener("change", () => {
   const file = input.files?.[0];
-  if (file) showImage(file);
+  if (file) void showImage(file);
 });
 
 for (const eventName of ["dragenter", "dragover"]) {
@@ -776,14 +838,14 @@ for (const eventName of ["dragleave", "drop"]) {
 
 dropZone.addEventListener("drop", (event) => {
   const file = event.dataTransfer?.files[0];
-  if (file) showImage(file);
+  if (file) void showImage(file);
 });
 
 cropStage.addEventListener("pointerdown", (event) => {
   if (!selectedImageFile || (event.button !== 0 && event.button !== 2)) return;
   event.preventDefault();
   cropStage.setPointerCapture(event.pointerId);
-  if (event.button === 2) {
+  if (event.button === 2 || cropTool.value === "pan") {
     cropPanStart = {
       pointerId: event.pointerId,
       clientX: event.clientX,
@@ -837,7 +899,7 @@ cropStage.addEventListener("pointerup", (event) => {
 cropStage.addEventListener("pointercancel", () => {
   cropPanStart = null;
   delete cropStage.dataset.panning;
-  selectedCrop = cropBeforeDrag;
+  if (cropDragStart) selectedCrop = cropBeforeDrag;
   cropDragStart = null;
   cropBeforeDrag = null;
   renderCropSelection();
@@ -914,6 +976,7 @@ async function initializeOpenCv(): Promise<void> {
 retryButton.addEventListener("click", () => void initializeOpenCv());
 window.addEventListener("beforeunload", () => {
   if (previewUrl) URL.revokeObjectURL(previewUrl);
+  if (resultPreviewUrl) URL.revokeObjectURL(resultPreviewUrl);
 });
 
 setOpenCvState("idle", "必要になったときに画像処理エンジンを準備します。");
@@ -1004,7 +1067,19 @@ function renderSmallKanaComposition(): void {
 }
 
 async function recognizeSelectedSingleGlyph(): Promise<void> {
-  if (!selectedImageFile || loadedGlyphTemplates.length === 0) return;
+  if (
+    !selectedImageFile ||
+    loadedGlyphTemplates.length === 0 ||
+    activeRecognitionController ||
+    imageLoading
+  )
+    return;
+  const ticket = readingSession.begin();
+  const controller = new AbortController();
+  activeRecognitionController = controller;
+  const file = selectedImageFile;
+  const crop = selectedCrop ? { ...selectedCrop } : null;
+  updateSingleRecognitionAvailability();
 
   recognizeSingle.disabled = true;
   recognizeSingle.textContent = "照合中…";
@@ -1014,7 +1089,8 @@ async function recognizeSelectedSingleGlyph(): Promise<void> {
   singleCandidateResults.innerHTML = "";
 
   try {
-    const source = await loadImageAsBinaryGlyph(selectedImageFile, selectedCrop);
+    const source = await loadImageAsBinaryGlyph(file, crop);
+    if (controller.signal.aborted || !readingSession.isCurrentRequest(ticket)) return;
     const binary = normalizeBinaryGlyph(source);
     const features = extractBasicFeatures(binary);
     if (features.foregroundRatio === 0) {
@@ -1027,23 +1103,24 @@ async function recognizeSelectedSingleGlyph(): Promise<void> {
     singleStatus.textContent = `前景 ${(features.foregroundRatio * 100).toFixed(1)}% · 上位候補を表示しました。`;
     singleStatus.dataset.state = "success";
   } catch (error) {
+    if (controller.signal.aborted || !readingSession.isCurrentRequest(ticket)) return;
     const message = error instanceof Error ? error.message : "画像を処理できませんでした。";
     singleStatus.textContent = message;
     singleStatus.dataset.state = "error";
   } finally {
     recognizeSingle.textContent = "この画像を照合";
-    updateSingleRecognitionAvailability();
+    if (activeRecognitionController === controller) {
+      activeRecognitionController = null;
+      updateSingleRecognitionAvailability();
+    }
   }
 }
 
-function syncGroundTruthFromRecognition(force = false): void {
-  const recognizedText = multiText.textContent ?? "";
-  useRecognizedText.disabled = recognizedText.trim().length === 0;
-  if (!recognizedText.trim() || (!force && !groundTruthAutoLinked)) return;
-
-  groundTruthInput.value = recognizedText;
-  groundTruthAutoLinked = true;
-  groundTruthInput.dataset.source = "recognition";
+function copyTextToExpectedDraft(): void {
+  readingSession.setExpectedDraft(readingSession.current?.text ?? "");
+  groundTruthInput.value = readingSession.current?.expectedDraft ?? "";
+  groundTruthInput.dataset.source = "draft";
+  renderLabelEvaluation();
 }
 
 const REVIEW_REASON_LABELS = {
@@ -1063,12 +1140,12 @@ function refreshRecognitionReview(index: number, item: RuntimeRecognizedGlyph): 
   const assessment = assessRecognitionReview(item);
   card.dataset.reviewState = assessment.state;
   badge.dataset.state = assessment.state;
-  badge.textContent =
-    assessment.state === "accepted"
-      ? "確認済み"
-      : assessment.state === "unrecognized"
-        ? "未認識"
-        : "要確認";
+  badge.textContent = recognitionReviewLabel(
+    assessment,
+    item.baseSelection === "manual" ||
+      item.sizeSelection !== "auto" ||
+      item.modifierSelection !== "auto",
+  );
   badge.title = assessment.reasons.map((reason) => REVIEW_REASON_LABELS[reason]).join("、");
 }
 
@@ -1125,26 +1202,34 @@ function updateMultiText(): void {
       values.push(output.kana);
       lineValues.set(lineIndex, values);
     });
-  multiText.textContent = [...lineValues.entries()]
+  const candidateText = [...lineValues.entries()]
     .sort(([left], [right]) => left - right)
     .map(([, values]) => values.join(""))
     .join("\n");
-  copyMultiText.disabled = !(multiText.textContent ?? "").trim();
-  copyMultiStatus.textContent = "";
-  syncGroundTruthFromRecognition();
-  renderLabelEvaluation();
-  updateStoredEvaluation();
+  readingSession.updateCandidates(
+    candidateText,
+    currentRecognizedGlyphs.some(
+      (item) =>
+        item.baseSelection === "manual" ||
+        item.sizeSelection !== "auto" ||
+        item.modifierSelection !== "auto",
+    ),
+  );
+  renderEditedText();
 }
 
 async function copyRecognizedText(): Promise<void> {
-  const text = multiText.textContent ?? "";
+  const text = readingSession.current?.text ?? "";
   if (!text.trim()) return;
   try {
     await navigator.clipboard.writeText(text);
     copyMultiStatus.textContent = "コピーしました";
     copyMultiStatus.dataset.state = "success";
   } catch {
-    copyMultiStatus.textContent = "コピーできませんでした。ブラウザの権限を確認してください。";
+    multiText.focus();
+    multiText.select();
+    copyMultiStatus.textContent =
+      "コピーできませんでした。選択した文章を手動でコピーしてください。";
     copyMultiStatus.dataset.state = "error";
   }
 }
@@ -1202,279 +1287,333 @@ function refreshMultiModifierOptions(baseSelect: HTMLSelectElement): void {
 }
 
 function renderLabelEvaluation(): void {
-  if (!groundTruthInput.value.trim()) {
+  const result = readingSession.current;
+  if (!result || result.confirmedExpected === null) {
     labelCharacterAccuracy.textContent = "--";
     labelLineAccuracy.textContent = "--";
     labelExactMatch.textContent = "--";
-    groundTruthStatus.textContent = "正解ラベルを入力すると評価します。";
+    groundTruthStatus.textContent =
+      "正解は未確定です。内容を確認して「正解として確定・保存」を押すと評価します。";
     delete groundTruthStatus.dataset.state;
     return;
   }
-
-  const evaluation = evaluateTranscription(multiText.textContent ?? "", groundTruthInput.value);
+  const evaluation = evaluateTranscription(result.automaticText, result.confirmedExpected);
   labelCharacterAccuracy.textContent = `${(evaluation.characterAccuracy * 100).toFixed(1)}%`;
   labelLineAccuracy.textContent = `${(evaluation.exactLineRate * 100).toFixed(1)}%`;
   labelExactMatch.textContent = evaluation.exactMatch ? "一致" : "不一致";
-  if (groundTruthAutoLinked) {
-    groundTruthStatus.textContent =
-      "認識結果を仮入力し、候補修正を自動反映しています。内容を確認して保存してください。";
-    groundTruthStatus.dataset.state = "warning";
-  } else {
-    groundTruthStatus.textContent = evaluation.exactMatch
-      ? `${evaluation.expectedCharacters}文字が全文一致しました。`
-      : `編集距離 ${evaluation.editDistance} · 正解 ${evaluation.expectedCharacters}文字`;
-    groundTruthStatus.dataset.state = evaluation.exactMatch ? "success" : "warning";
-  }
+  groundTruthStatus.textContent = `確定正解と自動認識の原文を比較しています。編集距離 ${evaluation.editDistance} · 正解 ${evaluation.expectedCharacters}文字`;
+  groundTruthStatus.dataset.state = evaluation.exactMatch ? "success" : "warning";
 }
 
 function saveCurrentGroundTruth(): void {
-  if (!selectedImageFile) return;
+  const result = readingSession.current;
+  if (!result) return;
   try {
-    const key = groundTruthStorageKey(selectedImageFile);
-    if (groundTruthInput.value.trim()) localStorage.setItem(key, groundTruthInput.value);
+    const key = groundTruthStorageKey(result.source.file, result.source.crop);
+    if (result.expectedDraft.trim()) localStorage.setItem(key, result.expectedDraft);
     else localStorage.removeItem(key);
-    groundTruthAutoLinked = false;
-    groundTruthInput.dataset.source = "saved";
-    groundTruthStatus.textContent = groundTruthInput.value.trim()
-      ? "この画像の正解ラベルをブラウザ内へ保存しました。"
-      : "この画像の正解ラベルを削除しました。";
-    groundTruthStatus.dataset.state = "success";
-    updateStoredEvaluation();
+    readingSession.confirmExpected();
+    groundTruthInput.dataset.source = result.confirmedExpected === null ? "draft" : "saved";
+    if (result.confirmedExpected === null) {
+      const records = loadEvaluationRecords();
+      delete records[key];
+      localStorage.setItem(EVALUATION_STORAGE_KEY, JSON.stringify(records));
+      renderEvaluationSummary();
+    } else updateStoredEvaluation();
+    renderLabelEvaluation();
   } catch {
-    groundTruthStatus.textContent = "ブラウザ内へ正解ラベルを保存できませんでした。";
+    groundTruthStatus.textContent = "正解を保存できませんでした。入力した下書きは保持しています。";
     groundTruthStatus.dataset.state = "warning";
   }
 }
 
-async function recognizeSelectedMultipleGlyphs(): Promise<void> {
-  if (!selectedImageFile || loadedGlyphTemplates.length === 0) return;
+function renderRecognizedCards(recognized: RuntimeRecognizedGlyph[]): void {
+  multiCandidateGrid.innerHTML = recognized
+    .map((item, index) => {
+      const topKana = item.selectedBaseKana;
+      const sizeChoices = buildGlyphSizeChoices(topKana, item.automaticSize);
+      const modifierChoices = buildGlyphModifierChoices(
+        topKana,
+        item.detectedModifier,
+        item.modifierConfidence,
+        item.modifierSelection,
+      );
+      return `
+        <article class="multi-candidate-card" data-result-index="${index}" data-source-x="${item.bbox.x}" data-source-y="${item.bbox.y}" data-source-width="${item.bbox.width}" data-source-height="${item.bbox.height}">
+          <canvas data-segment-preview="${index}" aria-label="${index + 1}番目の文字候補"></canvas>
+          <span class="multi-order">${index + 1}</span>
+          <span class="recognition-review-badge" data-review-index="${index}" aria-live="polite"></span>
+          <label>
+            認識候補
+            <select data-line-index="${item.lineIndex}" data-segment-index="${index}" data-automatic-size="${item.automaticSize}" data-detected-modifier="${item.detectedModifier ?? ""}" data-modifier-confidence="${item.modifierConfidence}" aria-label="${index + 1}番目の認識候補">
+              ${(() => {
+                const choices = buildCorrectionChoices(item.candidates, horizontalGlyphs);
+                return `
+                  <optgroup label="上位候補">
+                    ${choices.topCandidates
+                      .map((choice) => {
+                        const small =
+                          item.automaticSize === "small" ? composeSmallKana(choice.kana) : null;
+                        const label = small?.ok
+                          ? `${small.kana}（${choice.kana}の小書き）`
+                          : choice.kana;
+                        return `<option value="${choice.kana}">${label} · ${((choice.score ?? 0) * 100).toFixed(1)}%</option>`;
+                      })
+                      .join("")}
+                  </optgroup>
+                  <optgroup label="その他の文字">
+                    ${choices.otherGlyphs
+                      .map((choice) => `<option value="${choice.kana}">${choice.kana}</option>`)
+                      .join("")}
+                  </optgroup>
+                `;
+              })()}
+            </select>
+            <button class="base-auto-reset" data-base-auto-index="${index}" type="button" disabled>自動候補へ戻す</button>
+          </label>
+          <label>
+            文字サイズ
+            <select data-size-index="${index}" aria-label="${index + 1}番目の文字サイズ">
+              ${sizeChoices
+                .map(
+                  (choice) =>
+                    `<option value="${choice.value}"${choice.selected ? " selected" : ""}${choice.disabled ? " disabled" : ""}>${choice.label}</option>`,
+                )
+                .join("")}
+            </select>
+          </label>
+          <label>
+            修飾記号
+            <select data-modifier-index="${index}" aria-label="${index + 1}番目の修飾記号">
+              ${modifierChoices
+                .map(
+                  (choice) =>
+                    `<option value="${choice.value}"${choice.selected ? " selected" : ""}${choice.disabled ? " disabled" : ""}>${choice.label}</option>`,
+                )
+                .join("")}
+            </select>
+          </label>
+          <span class="multi-resolved-output">出力: <strong data-output-index="${index}">${topKana}</strong></span>
+        </article>
+      `;
+    })
+    .join("");
 
-  activeRecognitionController?.abort();
+  recognized.forEach((item, index) => {
+    const canvas = multiCandidateGrid.querySelector<HTMLCanvasElement>(
+      `[data-segment-preview="${index}"]`,
+    );
+    if (canvas) drawBinaryGlyph(canvas, item.binary, 2);
+  });
+  recognized.forEach((item, index) => {
+    const base = multiCandidateGrid.querySelector<HTMLSelectElement>(
+      `select[data-segment-index="${index}"]`,
+    );
+    const size = multiCandidateGrid.querySelector<HTMLSelectElement>(
+      `select[data-size-index="${index}"]`,
+    );
+    const modifier = multiCandidateGrid.querySelector<HTMLSelectElement>(
+      `select[data-modifier-index="${index}"]`,
+    );
+    const reset = multiCandidateGrid.querySelector<HTMLButtonElement>(
+      `button[data-base-auto-index="${index}"]`,
+    );
+    if (base) base.value = item.selectedBaseKana;
+    if (size) size.value = item.sizeSelection;
+    if (modifier) modifier.value = item.modifierSelection;
+    if (reset) reset.disabled = item.baseSelection === "auto";
+    refreshRecognitionReview(index, item);
+  });
+  multiCandidateGrid
+    .querySelectorAll<HTMLSelectElement>("select[data-line-index]")
+    .forEach((select) => {
+      refreshMultiSizeOptions(select);
+      refreshMultiModifierOptions(select);
+      select.addEventListener("change", () => {
+        refreshMultiSizeOptions(select);
+        refreshMultiModifierOptions(select);
+        const item = recognized[Number(select.dataset.segmentIndex)];
+        const sizeSelect = multiCandidateGrid.querySelector<HTMLSelectElement>(
+          `select[data-size-index="${select.dataset.segmentIndex}"]`,
+        );
+        const modifierSelect = multiCandidateGrid.querySelector<HTMLSelectElement>(
+          `select[data-modifier-index="${select.dataset.segmentIndex}"]`,
+        );
+        if (item) {
+          item.selectedBaseKana = select.value;
+          item.baseSelection = "manual";
+          item.sizeSelection = (sizeSelect?.value ?? "auto") as GlyphSizeSelection;
+          item.modifierSelection = (modifierSelect?.value ?? "auto") as GlyphModifierSelection;
+        }
+        const resetButton = multiCandidateGrid.querySelector<HTMLButtonElement>(
+          `button[data-base-auto-index="${select.dataset.segmentIndex}"]`,
+        );
+        if (resetButton) resetButton.disabled = false;
+        updateMultiText();
+      });
+    });
+  multiCandidateGrid
+    .querySelectorAll<HTMLButtonElement>("button[data-base-auto-index]")
+    .forEach((button) =>
+      button.addEventListener("click", () => {
+        const index = Number(button.dataset.baseAutoIndex);
+        const item = recognized[index];
+        const baseSelect = multiCandidateGrid.querySelector<HTMLSelectElement>(
+          `select[data-segment-index="${index}"]`,
+        );
+        if (!item || !baseSelect) return;
+        item.selectedBaseKana = item.automaticBaseKana;
+        item.baseSelection = "auto";
+        baseSelect.value = item.automaticBaseKana;
+        refreshMultiSizeOptions(baseSelect);
+        refreshMultiModifierOptions(baseSelect);
+        const sizeSelect = multiCandidateGrid.querySelector<HTMLSelectElement>(
+          `select[data-size-index="${index}"]`,
+        );
+        const modifierSelect = multiCandidateGrid.querySelector<HTMLSelectElement>(
+          `select[data-modifier-index="${index}"]`,
+        );
+        item.sizeSelection = (sizeSelect?.value ?? "auto") as GlyphSizeSelection;
+        item.modifierSelection = (modifierSelect?.value ?? "auto") as GlyphModifierSelection;
+        button.disabled = true;
+        updateMultiText();
+      }),
+    );
+  multiCandidateGrid
+    .querySelectorAll<HTMLSelectElement>("select[data-size-index]")
+    .forEach((select) =>
+      select.addEventListener("change", () => {
+        const item = recognized[Number(select.dataset.sizeIndex)];
+        if (item) item.sizeSelection = select.value as GlyphSizeSelection;
+        updateMultiText();
+      }),
+    );
+  multiCandidateGrid
+    .querySelectorAll<HTMLSelectElement>("select[data-modifier-index]")
+    .forEach((select) =>
+      select.addEventListener("change", () => {
+        const item = recognized[Number(select.dataset.modifierIndex)];
+        if (item) item.modifierSelection = select.value as GlyphModifierSelection;
+        updateMultiText();
+      }),
+    );
+}
+
+function renderEditedText(): void {
+  const result = readingSession.current;
+  if (!result) return;
+  if (multiText.value !== result.text) multiText.value = result.text;
+  copyMultiText.disabled = !result.text.trim();
+  useRecognizedText.disabled = !result.text.trim();
+  confirmText.disabled = !result.text.trim() || result.reviewed;
+  candidateTextNotice.hidden = !result.textEdited;
+  textReviewStatus.textContent = result.reviewed
+    ? "本人確認済み"
+    : result.textEdited || result.candidatesEdited
+      ? "手動修正あり・未確認"
+      : "自動候補・未確認";
+  copyMultiStatus.textContent = "";
+}
+
+function renderCurrentResult(): void {
+  const result = readingSession.current;
+  multiResult.hidden = !result;
+  pendingResult.hidden = !readingSession.pending;
+  if (readingSession.pending)
+    pendingMessage.textContent = `「${readingSession.pending.source.file.name}」の新しい結果ができました。現在の編集を保持しています。`;
+  restoreResult.hidden = !readingSession.previous;
+  if (!result) return;
+  currentRecognizedGlyphs = result.source.recognized;
+  const crop = result.source.crop;
+  const range = crop
+    ? `範囲 x${Math.round(crop.x * 100)}% y${Math.round(crop.y * 100)}% 幅${Math.round(crop.width * 100)}% 高さ${Math.round(crop.height * 100)}%`
+    : "画像全体";
+  resultSource.textContent = `結果の元画像: ${result.source.file.name}（${range}）`;
+  if (resultPreviewUrl) URL.revokeObjectURL(resultPreviewUrl);
+  resultPreviewUrl = URL.createObjectURL(result.source.file);
+  resultSourceImage.src = resultPreviewUrl;
+  getRequiredElement<HTMLElement>("#automatic-text").textContent = result.automaticText;
+  getRequiredElement<HTMLElement>("#recognition-details").textContent = result.source.details;
+  groundTruthInput.value = result.expectedDraft;
+  groundTruthInput.dataset.source = result.confirmedExpected === null ? "draft" : "saved";
+  renderRecognizedCards(result.source.recognized);
+  renderEditedText();
+  renderLabelEvaluation();
+}
+
+async function recognizeSelectedMultipleGlyphs(): Promise<void> {
+  if (
+    !selectedImageFile ||
+    loadedGlyphTemplates.length === 0 ||
+    imageLoading ||
+    activeRecognitionController
+  )
+    return;
+  const ticket = readingSession.begin();
   const recognitionController = new AbortController();
   activeRecognitionController = recognitionController;
   const recognitionFile = selectedImageFile;
   const recognitionCrop = selectedCrop ? { ...selectedCrop } : null;
-
-  recognizeMultiple.disabled = true;
-  recognizeMultiple.textContent = "抽出中…";
-  multiResult.hidden = false;
-  multiStatus.textContent = "背景ノイズを除去して文字候補を探しています。";
+  const mode = binarizationMode.value;
+  const started = performance.now();
+  let phase = "画像を処理しています";
+  const updateProgress = (): void => {
+    if (readingSession.isCurrentRequest(ticket))
+      multiStatus.textContent = `${phase} · ${Math.floor((performance.now() - started) / 1000)}秒`;
+  };
   multiStatus.dataset.state = "loading";
-  currentRecognizedGlyphs = [];
-  multiCandidateGrid.innerHTML = "";
-  multiText.textContent = "";
-  copyMultiText.disabled = true;
-  copyMultiStatus.textContent = "";
-  useRecognizedText.disabled = true;
-
+  updateProgress();
+  updateSingleRecognitionAvailability();
+  const timer = window.setInterval(updateProgress, 1000);
   try {
     const variants = await loadImageAsBinaryGlyphVariants(recognitionFile, recognitionCrop);
-    if (recognitionController.signal.aborted) return;
-    multiStatus.textContent = "文字候補をバックグラウンドで照合しています。";
-    const { attempts, selected: selectedAttempt } = await recognizeInWorker(
+    if (recognitionController.signal.aborted || !readingSession.isCurrentRequest(ticket)) return;
+    phase = "文字を照合しています";
+    const { attempts, selected } = await recognizeInWorker(
       variants,
       loadedGlyphTemplates,
-      binarizationMode.value as "auto" | (typeof variants)[number]["mode"],
+      mode as "auto" | (typeof variants)[number]["mode"],
       recognitionController.signal,
     );
-    if (recognitionController.signal.aborted) return;
-    if (!selectedAttempt) {
+    if (recognitionController.signal.aborted || !readingSession.isCurrentRequest(ticket)) return;
+    if (!selected || !selected.recognized.length)
       throw new Error(
-        "文字候補を検出できませんでした。白または単純な背景の範囲へ切り抜いてください。",
+        "文字を検出できませんでした。文字の範囲を狭めて試してください。前の結果と編集は保持しています。",
       );
-    }
-    const { recognized } = selectedAttempt;
-    currentRecognizedGlyphs = recognized;
-
-    multiCandidateGrid.innerHTML = recognized
-      .map((item, index) => {
-        const topKana = item.candidates[0]?.kana ?? "";
-        const sizeChoices = buildGlyphSizeChoices(topKana, item.automaticSize);
-        const modifierChoices = buildGlyphModifierChoices(
-          topKana,
-          item.detectedModifier,
-          item.modifierConfidence,
-          item.modifierSelection,
-        );
-        return `
-          <article class="multi-candidate-card" data-result-index="${index}" data-source-x="${item.bbox.x}" data-source-y="${item.bbox.y}" data-source-width="${item.bbox.width}" data-source-height="${item.bbox.height}">
-            <canvas data-segment-preview="${index}" aria-label="${index + 1}番目の文字候補"></canvas>
-            <span class="multi-order">${index + 1}</span>
-            <span class="recognition-review-badge" data-review-index="${index}" aria-live="polite"></span>
-            <label>
-              認識候補
-              <select data-line-index="${item.lineIndex}" data-segment-index="${index}" data-automatic-size="${item.automaticSize}" data-detected-modifier="${item.detectedModifier ?? ""}" data-modifier-confidence="${item.modifierConfidence}" aria-label="${index + 1}番目の認識候補">
-                ${(() => {
-                  const choices = buildCorrectionChoices(item.candidates, horizontalGlyphs);
-                  return `
-                    <optgroup label="上位候補">
-                      ${choices.topCandidates
-                        .map((choice) => {
-                          const small =
-                            item.automaticSize === "small" ? composeSmallKana(choice.kana) : null;
-                          const label = small?.ok
-                            ? `${small.kana}（${choice.kana}の小書き）`
-                            : choice.kana;
-                          return `<option value="${choice.kana}">${label} · ${((choice.score ?? 0) * 100).toFixed(1)}%</option>`;
-                        })
-                        .join("")}
-                    </optgroup>
-                    <optgroup label="その他の文字">
-                      ${choices.otherGlyphs
-                        .map((choice) => `<option value="${choice.kana}">${choice.kana}</option>`)
-                        .join("")}
-                    </optgroup>
-                  `;
-                })()}
-              </select>
-              <button class="base-auto-reset" data-base-auto-index="${index}" type="button" disabled>自動候補へ戻す</button>
-            </label>
-            <label>
-              文字サイズ
-              <select data-size-index="${index}" aria-label="${index + 1}番目の文字サイズ">
-                ${sizeChoices
-                  .map(
-                    (choice) =>
-                      `<option value="${choice.value}"${choice.selected ? " selected" : ""}${choice.disabled ? " disabled" : ""}>${choice.label}</option>`,
-                  )
-                  .join("")}
-              </select>
-            </label>
-            <label>
-              修飾記号
-              <select data-modifier-index="${index}" aria-label="${index + 1}番目の修飾記号">
-                ${modifierChoices
-                  .map(
-                    (choice) =>
-                      `<option value="${choice.value}"${choice.selected ? " selected" : ""}${choice.disabled ? " disabled" : ""}>${choice.label}</option>`,
-                  )
-                  .join("")}
-              </select>
-            </label>
-            <span class="multi-resolved-output">出力: <strong data-output-index="${index}">${topKana}</strong></span>
-          </article>
-        `;
-      })
-      .join("");
-
-    recognized.forEach((item, index) => {
-      const canvas = multiCandidateGrid.querySelector<HTMLCanvasElement>(
-        `[data-segment-preview="${index}"]`,
-      );
-      if (canvas) drawBinaryGlyph(canvas, item.binary, 2);
-    });
-    multiCandidateGrid
-      .querySelectorAll<HTMLSelectElement>("select[data-line-index]")
-      .forEach((select) => {
-        refreshMultiSizeOptions(select);
-        refreshMultiModifierOptions(select);
-        select.addEventListener("change", () => {
-          refreshMultiSizeOptions(select);
-          refreshMultiModifierOptions(select);
-          const item = recognized[Number(select.dataset.segmentIndex)];
-          const sizeSelect = multiCandidateGrid.querySelector<HTMLSelectElement>(
-            `select[data-size-index="${select.dataset.segmentIndex}"]`,
-          );
-          const modifierSelect = multiCandidateGrid.querySelector<HTMLSelectElement>(
-            `select[data-modifier-index="${select.dataset.segmentIndex}"]`,
-          );
-          if (item) {
-            item.selectedBaseKana = select.value;
-            item.baseSelection = "manual";
-            item.sizeSelection = (sizeSelect?.value ?? "auto") as GlyphSizeSelection;
-            item.modifierSelection = (modifierSelect?.value ?? "auto") as GlyphModifierSelection;
-          }
-          const resetButton = multiCandidateGrid.querySelector<HTMLButtonElement>(
-            `button[data-base-auto-index="${select.dataset.segmentIndex}"]`,
-          );
-          if (resetButton) resetButton.disabled = false;
-          updateMultiText();
-        });
-      });
-    multiCandidateGrid
-      .querySelectorAll<HTMLButtonElement>("button[data-base-auto-index]")
-      .forEach((button) =>
-        button.addEventListener("click", () => {
-          const index = Number(button.dataset.baseAutoIndex);
-          const item = recognized[index];
-          const baseSelect = multiCandidateGrid.querySelector<HTMLSelectElement>(
-            `select[data-segment-index="${index}"]`,
-          );
-          if (!item || !baseSelect) return;
-          item.selectedBaseKana = item.automaticBaseKana;
-          item.baseSelection = "auto";
-          baseSelect.value = item.automaticBaseKana;
-          refreshMultiSizeOptions(baseSelect);
-          refreshMultiModifierOptions(baseSelect);
-          const sizeSelect = multiCandidateGrid.querySelector<HTMLSelectElement>(
-            `select[data-size-index="${index}"]`,
-          );
-          const modifierSelect = multiCandidateGrid.querySelector<HTMLSelectElement>(
-            `select[data-modifier-index="${index}"]`,
-          );
-          item.sizeSelection = (sizeSelect?.value ?? "auto") as GlyphSizeSelection;
-          item.modifierSelection = (modifierSelect?.value ?? "auto") as GlyphModifierSelection;
-          button.disabled = true;
-          updateMultiText();
-        }),
-      );
-    multiCandidateGrid
-      .querySelectorAll<HTMLSelectElement>("select[data-size-index]")
-      .forEach((select) =>
-        select.addEventListener("change", () => {
-          const item = recognized[Number(select.dataset.sizeIndex)];
-          if (item) item.sizeSelection = select.value as GlyphSizeSelection;
-          updateMultiText();
-        }),
-      );
-    multiCandidateGrid
-      .querySelectorAll<HTMLSelectElement>("select[data-modifier-index]")
-      .forEach((select) =>
-        select.addEventListener("change", () => {
-          const item = recognized[Number(select.dataset.modifierIndex)];
-          if (item) item.modifierSelection = select.value as GlyphModifierSelection;
-          updateMultiText();
-        }),
-      );
-    updateMultiText();
-    const modeDescription =
-      binarizationMode.value === "auto"
-        ? `${selectedAttempt.label}を自動選択`
-        : `${selectedAttempt.label}で処理`;
-    const attemptSummary = attempts
-      .map((attempt) => {
-        const refinedCount = attempt.refinedCandidateCount;
-        const count =
-          attempt.initialCandidateCount === refinedCount
-            ? `${refinedCount}字`
-            : `${attempt.initialCandidateCount}→${refinedCount}字`;
-        return `${attempt.label} ${count}`;
-      })
-      .join(" / ");
-    const modifierCount = recognized.filter(
-      (item) =>
-        item.detectedModifier &&
-        item.modifierConfidence >= 0.7 &&
-        getSupportedModifiers(item.candidates[0]?.kana ?? "").includes(item.detectedModifier),
-    ).length;
-    const smallCount = recognized.filter((item) => item.automaticSize === "small").length;
-    const automaticSummary = [
-      modifierCount ? `修飾記号 ${modifierCount}件` : "",
-      smallCount ? `小書き ${smallCount}件` : "",
-    ]
-      .filter(Boolean)
-      .join(" · ");
-    multiStatus.textContent = `${modeDescription} · ${selectedAttempt.lineCount}行・${selectedAttempt.refinedCandidateCount}文字候補を抽出しました。${automaticSummary ? `${automaticSummary}を自動判定。` : ""}比較: ${attemptSummary}`;
+    const automatic = automaticRecognitionEvaluationData(selected.recognized)!;
+    const summary = `${selected.lineCount}行・${selected.refinedCandidateCount}文字を読み取りました。`;
+    const details = `${selected.label} · ${mode === "auto" ? "自動選択" : "手動選択"}。比較: ${attempts.map((attempt) => `${attempt.label} ${attempt.initialCandidateCount}→${attempt.refinedCandidateCount}文字`).join(" / ")}`;
+    readingSession.complete(
+      ticket,
+      {
+        file: recognitionFile,
+        crop: recognitionCrop,
+        recognized: selected.recognized,
+        summary,
+        details,
+      },
+      automatic.predicted,
+      loadGroundTruth(recognitionFile, recognitionCrop),
+    );
+    renderCurrentResult();
+    updateStoredEvaluation();
+    multiStatus.textContent = readingSession.pending
+      ? "新しい認識結果を用意しました。編集中の文章はそのままです。"
+      : summary;
     multiStatus.dataset.state = "success";
   } catch (error) {
-    if (error instanceof DOMException && error.name === "AbortError") return;
+    if (!readingSession.isCurrentRequest(ticket) || recognitionController.signal.aborted) return;
     multiStatus.textContent =
-      error instanceof Error ? error.message : "複数文字画像を処理できませんでした。";
+      error instanceof Error
+        ? error.message
+        : "認識できませんでした。前の結果と編集は保持しています。";
     multiStatus.dataset.state = "error";
   } finally {
-    if (activeRecognitionController === recognitionController) activeRecognitionController = null;
-    recognizeMultiple.textContent = "複数文字を認識";
-    updateSingleRecognitionAvailability();
+    window.clearInterval(timer);
+    if (activeRecognitionController === recognitionController) {
+      activeRecognitionController = null;
+      updateSingleRecognitionAvailability();
+    }
   }
 }
 
@@ -1494,7 +1633,7 @@ async function initializeGlyphTemplates(): Promise<void> {
     robustnessRun.disabled = false;
     updateSingleRecognitionAvailability();
     renderCandidateRanking();
-    runRobustnessEvaluation();
+    evaluationStatus.textContent = "「再評価」で内部検査を実行します。";
     renderSmallKanaComposition();
   } catch (error) {
     const message = error instanceof Error ? error.message : "不明なエラーが発生しました。";
@@ -1512,15 +1651,41 @@ modifierBase.addEventListener("change", renderKanaComposition);
 modifierKind.addEventListener("change", renderKanaComposition);
 smallFormBase.addEventListener("change", renderSmallKanaComposition);
 groundTruthInput.addEventListener("input", () => {
-  groundTruthAutoLinked = false;
-  groundTruthInput.dataset.source = "manual";
+  readingSession.setExpectedDraft(groundTruthInput.value);
+  groundTruthInput.dataset.source = "draft";
   renderLabelEvaluation();
 });
 copyMultiText.addEventListener("click", () => void copyRecognizedText());
-useRecognizedText.addEventListener("click", () => {
-  syncGroundTruthFromRecognition(true);
-  renderLabelEvaluation();
+useRecognizedText.addEventListener("click", copyTextToExpectedDraft);
+multiText.addEventListener("input", () => {
+  readingSession.editText(multiText.value);
+  renderEditedText();
 });
+confirmText.addEventListener("click", () => {
+  if (readingSession.current) readingSession.current.reviewed = true;
+  renderEditedText();
+});
+cancelRecognition.addEventListener("click", () =>
+  cancelCurrentWork("中止しました。前の結果と編集中の文章は保持しています。"),
+);
+getRequiredElement<HTMLButtonElement>("#accept-result").addEventListener("click", () => {
+  readingSession.acceptPending();
+  renderCurrentResult();
+  updateStoredEvaluation();
+});
+getRequiredElement<HTMLButtonElement>("#keep-result").addEventListener("click", () => {
+  readingSession.pending = null;
+  pendingResult.hidden = true;
+});
+restoreResult.addEventListener("click", () => {
+  readingSession.restorePrevious();
+  renderCurrentResult();
+});
+getRequiredElement<HTMLButtonElement>("#use-candidate-text").addEventListener("click", () => {
+  readingSession.useCandidateText();
+  renderEditedText();
+});
+
 saveGroundTruth.addEventListener("click", saveCurrentGroundTruth);
 renderKanaComposition();
 renderEvaluationSummary();

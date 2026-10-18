@@ -6,11 +6,11 @@ import { extractBasicFeatures, type BinaryGlyph } from "./features";
 import { evaluateRecognitionGeometry } from "./geometry-quality";
 import { detectHorizontalModifier } from "./modifier-detection";
 import { normalizeBinaryGlyph } from "./normalize";
-import { assessSmallFormInLine } from "./small-form-detection";
+import { assessSmallFormInLine, assessTemplateSmallForms } from "./small-form-detection";
 import { rankGlyphCandidates, type GlyphCandidate } from "./similarity";
 import { segmentHorizontalText } from "./segment";
 import { refineTextSegmentsWithTemplates } from "./template-segmentation";
-import { selectBestRecognitionVariant } from "./variant-selection";
+import { scoreRecognitionVariant, selectBestRecognitionVariant } from "./variant-selection";
 
 export type RuntimeRecognizedGlyph = Omit<RecognizedGlyphResult, "candidates"> & {
   relativeHeight: number;
@@ -39,6 +39,8 @@ export interface RecognitionPipelineResult {
 }
 
 interface InternalRecognitionAttempt extends SelectedRecognitionAttempt {
+  backgroundCorrected: boolean;
+  surfaceEligible: boolean;
   candidateScores: readonly number[];
   candidateMargins: readonly number[];
   structurePenalty: number;
@@ -46,7 +48,10 @@ interface InternalRecognitionAttempt extends SelectedRecognitionAttempt {
   sourceAspectRatio: number;
 }
 
-function hasConfidentCompleteLines(attempt: InternalRecognitionAttempt): boolean {
+function hasConfidentCompleteLines(
+  attempt: InternalRecognitionAttempt,
+  templates: readonly LoadedGlyphTemplate[],
+): boolean {
   const lines = new Map<number, RuntimeRecognizedGlyph[]>();
   for (const glyph of attempt.recognized) {
     const line = lines.get(glyph.lineIndex) ?? [];
@@ -55,8 +60,43 @@ function hasConfidentCompleteLines(attempt: InternalRecognitionAttempt): boolean
   }
   if (lines.size < 2) return false;
   const thresholds = DEFAULT_RECOGNITION_REVIEW_THRESHOLDS;
+  const multiCharacterPeers = [...lines.values()].filter((line) => line.length >= 2).flat();
+  const templateById = new Map(templates.map((template) => [template.definition.id, template]));
+  const drawingSize = (glyph: RuntimeRecognizedGlyph): number | null => {
+    const template = templateById.get(glyph.candidates[0]?.templateId ?? "");
+    if (!template?.sourceBounds) return null;
+    return (glyph.bbox.height / template.sourceBounds.height) * template.definition.height;
+  };
+  const referenceSizes = multiCharacterPeers
+    .map(drawingSize)
+    .filter((size): size is number => size !== null)
+    .sort((a, b) => a - b);
+  const referenceSize = referenceSizes[Math.floor(referenceSizes.length / 2)];
   return [...lines.values()].every((line) => {
-    if (line.length < 2) return false;
+    if (line.length === 1) {
+      const glyph = line[0];
+      const size = drawingSize(glyph);
+      const top = glyph.candidates[0]?.score ?? 0;
+      const margin = top - (glyph.candidates[1]?.score ?? 0);
+      // A tiny dot or an isolated decoration can match a template very well.
+      // Require scale and neighboring text-column evidence for a singleton row.
+      if (
+        !referenceSize ||
+        size === null ||
+        size < referenceSize * 0.55 ||
+        size > referenceSize * 1.3 ||
+        top < 0.85 ||
+        margin < 0.12
+      )
+        return false;
+      const centerX = glyph.bbox.x + glyph.bbox.width / 2;
+      const centerY = glyph.bbox.y + glyph.bbox.height / 2;
+      return multiCharacterPeers.some(
+        (peer) =>
+          Math.abs(centerX - (peer.bbox.x + peer.bbox.width / 2)) <= referenceSize * 0.65 &&
+          Math.abs(centerY - (peer.bbox.y + peer.bbox.height / 2)) <= referenceSize * 2.5,
+      );
+    }
     const meanScore =
       line.reduce((sum, glyph) => sum + (glyph.candidates[0]?.score ?? 0), 0) / line.length;
     const accepted = line.filter((glyph) => {
@@ -87,9 +127,20 @@ export function runRecognitionPipeline(
         lineStrategy: "bottom-anchor" as const,
       },
     ];
+    const clearlySeparatedText =
+      variant.preprocessing !== undefined &&
+      variant.preprocessing.polarity !== "undetermined" &&
+      variant.preprocessing.separation >= 0.9;
     for (const strategy of strategies) {
       const initialSegmentation = segmentHorizontalText(variant.binary, {
         lineStrategy: strategy.lineStrategy,
+        // Recovering a framed text surface also exposes thin illustration fragments.
+        // The segmenter keeps the original mask if opening removes too much ink.
+        applyOpening: variant.backgroundCorrected && !clearlySeparatedText ? true : undefined,
+        // Small kana can make normal glyphs look like tall background contamination.
+        // Preserve their full outlines when preprocessing already separates the text.
+        trimBaselineContamination: !clearlySeparatedText,
+        preserveCompactSmallCandidates: clearlySeparatedText,
       });
       const segments = refineTextSegmentsWithTemplates(initialSegmentation.segments, templates);
       if (segments.length === 0 || segments.length > 160) continue;
@@ -155,10 +206,43 @@ export function runRecognitionPipeline(
           candidates,
         };
       });
+      // Keep variant selection stable while calibrating only the final size decision.
+      const smallOutlierCount = recognized.filter((item) => item.automaticSize === "small").length;
+      if (clearlySeparatedText) {
+        const templateById = new Map(
+          templates.map((template) => [template.definition.id, template]),
+        );
+        const calibratedSizes = assessTemplateSmallForms(
+          recognized.map((glyph) => ({
+            id: glyph.id,
+            lineIndex: glyph.lineIndex,
+            ...glyph.bbox,
+            template: templateById.get(glyph.candidates[0]?.templateId ?? ""),
+            score: glyph.candidates[0]?.score ?? 0,
+            margin: (glyph.candidates[0]?.score ?? 0) - (glyph.candidates[1]?.score ?? 0),
+            hasModifier: glyph.detectedModifier !== null,
+            sizeAlternatives:
+              (glyph.candidates[0]?.score ?? 0) - (glyph.candidates.at(-1)?.score ?? 0) >= 0.08
+                ? glyph.candidates
+                    .slice(1)
+                    .filter(
+                      (candidate) => (glyph.candidates[0]?.score ?? 0) - candidate.score < 0.08,
+                    )
+                    .map((candidate) => templateById.get(candidate.templateId))
+                : undefined,
+          })),
+        );
+        for (const glyph of recognized) {
+          const assessment = calibratedSizes.get(glyph.id);
+          const definition = definitions.get(glyph.candidates[0]?.templateId ?? "");
+          if (!assessment || !definition?.supportsSmallForm) continue;
+          glyph.automaticSize = assessment.isSmall ? "small" : "normal";
+          glyph.automaticSizeAmbiguous = assessment.ambiguous;
+        }
+      }
       const detectedModifierCount = recognized.filter(
         (item) => item.detectedModifier && item.modifierConfidence >= 0.7,
       ).length;
-      const smallOutlierCount = recognized.filter((item) => item.automaticSize === "small").length;
       const kanaFrequency = new Map<string, number>();
       recognized.forEach((item) => {
         const kana = item.candidates[0]?.kana ?? "";
@@ -171,7 +255,20 @@ export function runRecognitionPipeline(
       const modePriorPenalty =
         variant.mode === "background" ? 0 : variant.mode === "neutral-ink" ? 0.08 : 0.05;
       attempts.push({
-        id: `${variant.mode}${strategy.idSuffix}`,
+        id: `${variant.mode}${variant.backgroundCorrected ? "-surface" : ""}${strategy.idSuffix}`,
+        backgroundCorrected: variant.backgroundCorrected === true,
+        // A recovered surface may also expose clipped artwork. Do not replace
+        // the existing result with low-quality or edge-truncated glyphs.
+        surfaceEligible:
+          clearlySeparatedText ||
+          recognized.every(
+            (glyph) =>
+              (glyph.candidates[0]?.score ?? 0) >= 0.7 &&
+              glyph.bbox.x > 1 &&
+              glyph.bbox.y > 1 &&
+              glyph.bbox.x + glyph.bbox.width < variant.binary.width - 1 &&
+              glyph.bbox.y + glyph.bbox.height < variant.binary.height - 1,
+          ),
         baseMode: variant.mode,
         label: `${variant.label}${strategy.labelSuffix}`,
         initialCandidateCount: initialSegmentation.segments.length,
@@ -195,23 +292,40 @@ export function runRecognitionPipeline(
 
   let selected =
     mode === "auto"
-      ? selectBestRecognitionVariant(attempts)
+      ? selectBestRecognitionVariant(attempts.filter((attempt) => !attempt.backgroundCorrected))
       : (attempts.find(
-          (attempt) => attempt.baseMode === mode && !attempt.id.endsWith("-bottom-anchor"),
+          (attempt) =>
+            attempt.baseMode === mode &&
+            !attempt.backgroundCorrected &&
+            !attempt.id.endsWith("-bottom-anchor"),
         ) ?? null);
+  if (mode === "auto") {
+    const corrected = selectBestRecognitionVariant(
+      attempts.filter((attempt) => attempt.backgroundCorrected && attempt.surfaceEligible),
+    );
+    // Keep the original consensus unchanged. Only an eligible, better-scoring
+    // surface candidate may replace its selection.
+    if (
+      corrected &&
+      (!selected || scoreRecognitionVariant(corrected) > scoreRecognitionVariant(selected))
+    )
+      selected = corrected;
+  }
   // A background-noise fallback must not discard confident text lines in a simple image.
   // Keep the original selector for uncertain/colorful scenes and all manual modes.
   if (mode === "auto" && selected?.id.endsWith("-bottom-anchor")) {
     const preprocessing = variants.find(
       (variant) => variant.mode === selected?.baseMode,
     )?.preprocessing;
-    const complete = attempts.find((attempt) => attempt.id === selected?.baseMode);
+    const complete = attempts.find(
+      (attempt) => attempt.id === selected?.id.replace(/-bottom-anchor$/u, ""),
+    );
     if (
       preprocessing &&
       preprocessing.polarity !== "undetermined" &&
       preprocessing.separation >= 0.9 &&
       complete &&
-      hasConfidentCompleteLines(complete) &&
+      hasConfidentCompleteLines(complete, templates) &&
       selected.recognized.every((partial) =>
         complete.recognized.some(
           (full) =>

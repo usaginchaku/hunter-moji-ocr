@@ -5,12 +5,17 @@ import {
   type BasicGlyphFeatures,
   type BinaryGlyph,
 } from "../recognition/features";
-import { normalizeBinaryGlyph } from "../recognition/normalize";
+import {
+  findForegroundBounds,
+  normalizeBinaryGlyph,
+  type ForegroundBounds,
+} from "../recognition/normalize";
 
 export interface LoadedGlyphTemplate {
   definition: GlyphTemplateDefinition;
   binary: BinaryGlyph;
   features: BasicGlyphFeatures;
+  sourceBounds?: ForegroundBounds;
 }
 
 const FOREGROUND_DARKNESS_THRESHOLD = 64;
@@ -67,13 +72,12 @@ export async function loadGlyphTemplate(
   context.clearRect(0, 0, definition.width, definition.height);
   context.drawImage(image, 0, 0, definition.width, definition.height);
   const imageData = context.getImageData(0, 0, definition.width, definition.height);
-  const binary = normalizeBinaryGlyph(
-    rgbaToBinaryGlyph(imageData.data, definition.width, definition.height),
-    definition.width,
-  );
+  const source = rgbaToBinaryGlyph(imageData.data, definition.width, definition.height);
+  const binary = normalizeBinaryGlyph(source, definition.width);
 
   return {
     definition,
+    sourceBounds: findForegroundBounds(source) ?? undefined,
     binary,
     features: extractBasicFeatures(binary),
   };

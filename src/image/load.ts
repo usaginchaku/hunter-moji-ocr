@@ -26,6 +26,7 @@ export interface BinaryGlyphVariant {
   label: string;
   binary: BinaryGlyph;
   preprocessing?: ImagePreprocessing;
+  backgroundCorrected?: boolean;
 }
 
 export function calculateProcessingSize(
@@ -99,7 +100,8 @@ export function rgbaToAdaptiveBinaryGlyph(
   rgba: Uint8ClampedArray,
   width: number,
   height: number,
-): BinaryGlyph {
+  correctFramedBackground = true,
+): BinaryGlyph & { backgroundCorrected?: boolean } {
   if (width <= 0 || height <= 0 || rgba.length !== width * height * 4) {
     throw new Error("RGBA画像のサイズと画素数が一致しません。");
   }
@@ -123,11 +125,55 @@ export function rgbaToAdaptiveBinaryGlyph(
     sample(width - 1, y);
   }
 
-  const background = {
+  let background = {
     red: median(redSamples),
     green: median(greenSamples),
     blue: median(blueSamples),
   };
+  let backgroundCorrected = false;
+  // A bright frame can surround a large gray/colored text surface. Only replace
+  // the border estimate when one opaque, non-dark color covers most of the image.
+  // Quantization tolerates small compression differences without treating a
+  // gradient or a dark illustration as a uniform sheet of paper.
+  const colorCounts = new Uint32Array(4096);
+  let dominantColor = 0;
+  for (let offset = 0; correctFramedBackground && offset < rgba.length; offset += 4) {
+    if (rgba[offset + 3] < 250) continue;
+    const key =
+      ((rgba[offset] >> 4) << 8) | ((rgba[offset + 1] >> 4) << 4) | (rgba[offset + 2] >> 4);
+    colorCounts[key] += 1;
+    if (colorCounts[key] > colorCounts[dominantColor]) dominantColor = key;
+  }
+  if (colorCounts[dominantColor] / (width * height) >= 0.6) {
+    let red = 0;
+    let green = 0;
+    let blue = 0;
+    for (let offset = 0; offset < rgba.length; offset += 4) {
+      const key =
+        ((rgba[offset] >> 4) << 8) | ((rgba[offset + 1] >> 4) << 4) | (rgba[offset + 2] >> 4);
+      if (rgba[offset + 3] < 250 || key !== dominantColor) continue;
+      red += rgba[offset];
+      green += rgba[offset + 1];
+      blue += rgba[offset + 2];
+    }
+    const count = colorCounts[dominantColor];
+    const surface = { red: red / count, green: green / count, blue: blue / count };
+    const surfaceLuminance = surface.red * 0.2126 + surface.green * 0.7152 + surface.blue * 0.0722;
+    const borderLuminance =
+      background.red * 0.2126 + background.green * 0.7152 + background.blue * 0.0722;
+    if (
+      surfaceLuminance >= 96 &&
+      borderLuminance - surfaceLuminance >= 38 &&
+      Math.hypot(
+        background.red - surface.red,
+        background.green - surface.green,
+        background.blue - surface.blue,
+      ) >= 70
+    ) {
+      background = surface;
+      backgroundCorrected = true;
+    }
+  }
   const backgroundLuminance =
     background.red * 0.2126 + background.green * 0.7152 + background.blue * 0.0722;
   const pixels = new Uint8Array(width * height);
@@ -150,7 +196,7 @@ export function rgbaToAdaptiveBinaryGlyph(
     pixels[index] = differsFromBackground && looksLikeInk ? 1 : 0;
   }
 
-  return { width, height, pixels };
+  return { width, height, pixels, ...(backgroundCorrected ? { backgroundCorrected: true } : {}) };
 }
 
 function luminanceAt(rgba: Uint8ClampedArray, index: number): number {
@@ -537,11 +583,21 @@ export async function loadImageAsBinaryGlyphVariants(
     });
     await new Promise<void>((resolve) => window.setTimeout(resolve, 0));
   };
+  const adaptive = rgbaToAdaptiveBinaryGlyph(image.rgba, image.width, image.height);
   await append({
     mode: "background",
     label: "背景色との差",
-    binary: rgbaToAdaptiveBinaryGlyph(image.rgba, image.width, image.height),
+    binary: adaptive.backgroundCorrected
+      ? rgbaToAdaptiveBinaryGlyph(image.rgba, image.width, image.height, false)
+      : adaptive,
   });
+  if (adaptive.backgroundCorrected)
+    await append({
+      mode: "background",
+      label: "背景色との差（背景面補正）",
+      binary: adaptive,
+      backgroundCorrected: true,
+    });
   await append({
     mode: "dark-ink",
     label: "黒い線を優先",

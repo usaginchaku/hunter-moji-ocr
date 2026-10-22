@@ -9,7 +9,7 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ["src/**/*.ts", "tests/**/*.ts", "*.config.ts"],
+    files: ["src/**/*.ts", "tests/**/*.ts", "*.config.ts", "public/*.js"],
     languageOptions: {
       globals: {
         ...globals.browser,

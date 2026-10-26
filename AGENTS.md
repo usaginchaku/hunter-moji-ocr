@@ -170,3 +170,7 @@ READMEには「非公式ファンツール」「権利者とは無関係」と�
 - 対応表画像: 参照専用、公開リポジトリに転載しない
 
 この指示と、プロジェクト内の要件定義・技術設計・意思決定記録を優先して開発を支援すること。
+
+## Documentation and existing code
+
+When a repository's documentation and its existing code disagree, follow the conventions used in the existing code, and in your final reply point out each inconsistency you found between the documentation and the code.
